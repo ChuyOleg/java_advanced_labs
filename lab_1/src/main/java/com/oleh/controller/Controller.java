@@ -1,5 +1,6 @@
 package com.oleh.controller;
 
+import com.oleh.tasks.FindAllDirectoriesTask;
 import com.oleh.tasks.HandleDirectoryTask;
 import com.oleh.utils.InputUtility;
 import com.oleh.view.View;
@@ -14,13 +15,12 @@ public class Controller {
     private final ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     private final View view = new View();
 
+    @SuppressWarnings("InfiniteLoopStatement")
     public void runProgram() {
-
         while (true) {
-            String selection = InputUtility.inputStringValueWithScanner(view, View.START_CHOICE);
-            processUserSelection(selection);
+            String user_selection = InputUtility.inputStringValueWithScanner(view, View.START_CHOICE);
+            processUserSelection(user_selection);
         }
-
     }
 
     private void processUserSelection(String selection) {
@@ -36,7 +36,6 @@ public class Controller {
 
     private void startSearch() {
 
-//        BlockingQueue<Future<?>> futures = new ArrayBlockingQueue<>(1000);
         List<HandleDirectoryTask> tasks = new ArrayList<>();
 
         File dir = getFilePathFromUser();
@@ -44,7 +43,14 @@ public class Controller {
         int min_value = getMinValueFromUser();
         int max_value = getMaxValueFromUser(min_value);
 
-//        HandleDirectoryTask running = new HandleDirectoryTask(dir, service, futures, min_value, max_value);
+        FindAllDirectoriesTask first_task = new FindAllDirectoriesTask(view, dir, tasks, min_value, max_value);
+
+        try {
+            service.submit(first_task).get();
+            service.invokeAll(tasks);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
 
     }
 
