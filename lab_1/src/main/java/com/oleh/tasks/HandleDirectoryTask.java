@@ -1,12 +1,12 @@
 package com.oleh.tasks;
 
 import com.google.common.io.Files;
+import com.oleh.utils.ReadFileUtility;
 import com.oleh.view.View;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class HandleDirectoryTask implements Callable<Object> {
@@ -24,7 +24,7 @@ public class HandleDirectoryTask implements Callable<Object> {
     }
 
     @Override
-    public Object call() {
+    public Object call() throws FileNotFoundException {
         File[] files = startDir.listFiles();
         if (files == null) return null;
 
@@ -36,31 +36,24 @@ public class HandleDirectoryTask implements Callable<Object> {
         return null;
     }
 
-    private void searchRows(File file) {
-        Scanner sc = null;
-        try {
-            sc = new Scanner(new FileInputStream(file));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        while (true) {
-            assert sc != null;
-            if (!sc.hasNextLine()) break;
-            String str = sc.nextLine();
+    private void searchRows(File file) throws FileNotFoundException {
 
-            String[] numbers = str.replaceAll("[^0-9]+", " ").trim().split(" ");
+        List<String> lines = ReadFileUtility.getLinesOfFile(file);
+
+        for (String line : lines) {
+            String[] numbers = line.replaceAll("[^0-9]+", " ").trim().split(" ");
 
             if (numbers[0].equals("")) continue;
 
             for (String number : numbers) {
                 double value = Double.parseDouble(number);
                 if (value >= min_value && value <= max_value) {
-                    view.printMessageLn(file.getPath() + str);
+                    view.printMessageLn(file.getPath() + line);
                     break;
                 }
             }
         }
-        sc.close();
+
     }
 
 }

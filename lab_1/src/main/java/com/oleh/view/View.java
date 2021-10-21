@@ -18,6 +18,8 @@ public class View {
 
     public static final String ENTRY_IS_NOT_INTEGER = "Your entry isn`t integer. ";
 
+    public static final String THREAD_EXECUTION_EXCEPTION = "An error occurred during execution this task.";
+
     public void printMessage(String message) {
         System.out.print(message);
     }

@@ -49,7 +49,7 @@ public class Controller {
             service.submit(first_task).get();
             service.invokeAll(tasks);
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            view.printMessageLn(View.THREAD_EXECUTION_EXCEPTION);
         }
 
     }
