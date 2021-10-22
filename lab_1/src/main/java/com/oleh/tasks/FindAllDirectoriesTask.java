@@ -3,33 +3,32 @@ package com.oleh.tasks;
 import com.oleh.view.View;
 
 import java.io.File;
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 
-public class FindAllDirectoriesTask implements Runnable {
+public class FindAllDirectoriesTask implements Callable<Object> {
 
     private final View view;
+    private final BlockingQueue<File> dirs;
     private final File start_dir;
-    private final List<HandleDirectoryTask> tasks;
-    private final int min_value;
-    private final int max_value;
 
-    public FindAllDirectoriesTask(View view, File start_dir, List<HandleDirectoryTask> tasks, int min_value, int max_value) {
+    public FindAllDirectoriesTask(View view, BlockingQueue<File> dirs, File start_dir) {
         this.view = view;
         this.start_dir = start_dir;
-        this.tasks = tasks;
-        this.min_value = min_value;
-        this.max_value = max_value;
+        this.dirs = dirs;
     }
 
     @Override
-    public void run() {
+    public Object call() {
         findSubDirectories(start_dir);
+        putDirIntoQueue(new File(""));
+        return null;
     }
 
     private void findSubDirectories(File dir) {
 
         if (dir.isDirectory()) {
-            tasks.add(new HandleDirectoryTask(view, dir, min_value, max_value));
+            putDirIntoQueue(dir);
         }
 
         File[] files = dir.listFiles();
@@ -41,6 +40,14 @@ public class FindAllDirectoriesTask implements Runnable {
             }
         }
 
+    }
+
+    private void putDirIntoQueue(File dir) {
+        try {
+            dirs.put(dir);
+        } catch (InterruptedException e) {
+            view.printMessageLn(String.format(View.DIR_HAS_BEEN_SKIPPED, dir));
+        }
     }
 
 

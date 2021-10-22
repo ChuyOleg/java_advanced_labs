@@ -20,6 +20,8 @@ public class View {
 
     public static final String THREAD_EXECUTION_EXCEPTION = "An error occurred during execution this task.";
 
+    public static final String DIR_HAS_BEEN_SKIPPED = "Directory [%s] has been skipped.";
+
     public void printMessage(String message) {
         System.out.print(message);
     }
