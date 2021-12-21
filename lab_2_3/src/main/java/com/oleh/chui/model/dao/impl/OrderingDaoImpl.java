@@ -38,12 +38,7 @@ public class OrderingDaoImpl implements OrderingDao {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(Ordering.builder()
-                        .id(resultSet.getInt("id"))
-                        .productId(resultSet.getInt("productId"))
-                        .personId(resultSet.getInt("personId"))
-                        .status(Ordering.Status.valueOf(resultSet.getString("status")))
-                        .build());
+                return Optional.of(buildOrderingFromResultSet(resultSet));
             } else {
                 return Optional.empty();
             }
@@ -62,12 +57,7 @@ public class OrderingDaoImpl implements OrderingDao {
             ResultSet resultSet = statement.executeQuery();
             List<Ordering> orderingList = new ArrayList<>();
             while (resultSet.next()) {
-                Ordering ordering = Ordering.builder()
-                        .id(resultSet.getInt("id"))
-                        .productId(resultSet.getInt("productId"))
-                        .personId(resultSet.getInt("personId"))
-                        .status(Ordering.Status.valueOf(resultSet.getString("status")))
-                        .build();
+                Ordering ordering = buildOrderingFromResultSet(resultSet);
 
                 orderingList.add(ordering);
             }
@@ -140,5 +130,14 @@ public class OrderingDaoImpl implements OrderingDao {
         } finally {
             ConnectionPoolHolder.closeConnection(connection);
         }
+    }
+
+    private Ordering buildOrderingFromResultSet(ResultSet resultSet) throws SQLException {
+        return Ordering.builder()
+                .id(resultSet.getInt("id"))
+                .productId(resultSet.getInt("productId"))
+                .personId(resultSet.getInt("personId"))
+                .status(Ordering.Status.valueOf(resultSet.getString("status")))
+                .build();
     }
 }

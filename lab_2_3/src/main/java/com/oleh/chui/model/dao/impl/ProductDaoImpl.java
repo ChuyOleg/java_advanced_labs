@@ -38,14 +38,7 @@ public class ProductDaoImpl implements ProductDao {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(new Product.Builder()
-                        .setId(resultSet.getInt("id"))
-                        .setName(resultSet.getString("name"))
-                        .setPrice(resultSet.getBigDecimal("price"))
-                        .setCategory(resultSet.getString("category"))
-                        .setStartDate(resultSet.getObject("startDate", LocalDate.class))
-                        .setSize(Product.Size.valueOf(resultSet.getString("size")))
-                        .build());
+                return Optional.of(buildProductFromResultSet(resultSet));
             } else {
                 return Optional.empty();
             }
@@ -64,14 +57,7 @@ public class ProductDaoImpl implements ProductDao {
             ResultSet resultSet = statement.executeQuery();
             List<Product> productList = new ArrayList<>();
             while (resultSet.next()) {
-                Product product = new Product.Builder()
-                        .setId(resultSet.getInt("id"))
-                        .setName(resultSet.getString("name"))
-                        .setPrice(resultSet.getBigDecimal("price"))
-                        .setCategory(resultSet.getString("category"))
-                        .setStartDate(resultSet.getObject("startDate", LocalDate.class))
-                        .setSize(Product.Size.valueOf(resultSet.getString("size")))
-                        .build();
+                Product product = buildProductFromResultSet(resultSet);
 
                 productList.add(product);
             }
@@ -116,5 +102,16 @@ public class ProductDaoImpl implements ProductDao {
         } finally {
             ConnectionPoolHolder.closeConnection(connection);
         }
+    }
+
+    private Product buildProductFromResultSet(ResultSet resultSet) throws SQLException {
+        return new Product.Builder()
+                .setId(resultSet.getInt("id"))
+                .setName(resultSet.getString("name"))
+                .setPrice(resultSet.getBigDecimal("price"))
+                .setCategory(resultSet.getString("category"))
+                .setStartDate(resultSet.getObject("startDate", LocalDate.class))
+                .setSize(Product.Size.valueOf(resultSet.getString("size")))
+                .build();
     }
 }

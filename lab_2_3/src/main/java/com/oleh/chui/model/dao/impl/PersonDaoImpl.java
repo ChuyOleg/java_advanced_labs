@@ -41,14 +41,7 @@ public class PersonDaoImpl implements PersonDao {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-               return Optional.of(Person.builder()
-                       .id(resultSet.getInt("id"))
-                       .login(resultSet.getString("login"))
-                       .password(resultSet.getString("password").toCharArray())
-                       .email(resultSet.getString("email"))
-                       .role(Person.Role.valueOf(resultSet.getString("role")))
-                       .blocked(resultSet.getBoolean("blocked"))
-                       .build());
+               return Optional.of(buildPersonFromResultSet(resultSet));
             } else {
                 return Optional.empty();
             }
@@ -67,14 +60,7 @@ public class PersonDaoImpl implements PersonDao {
             ResultSet resultSet = statement.executeQuery();
             List<Person> personList = new ArrayList<>();
             while (resultSet.next()) {
-                Person person = Person.builder()
-                        .id(resultSet.getInt("id"))
-                        .login(resultSet.getString("login"))
-                        .password(resultSet.getString("password").toCharArray())
-                        .email(resultSet.getString("email"))
-                        .role(Person.Role.valueOf(resultSet.getString("role")))
-                        .blocked(resultSet.getBoolean("blocked"))
-                        .build();
+                Person person = buildPersonFromResultSet(resultSet);
 
                 personList.add(person);
             }
@@ -148,5 +134,16 @@ public class PersonDaoImpl implements PersonDao {
         } finally {
             ConnectionPoolHolder.closeConnection(connection);
         }
+    }
+
+    private Person buildPersonFromResultSet(ResultSet resultSet) throws SQLException {
+        return Person.builder()
+                .id(resultSet.getInt("id"))
+                .login(resultSet.getString("login"))
+                .password(resultSet.getString("password").toCharArray())
+                .email(resultSet.getString("email"))
+                .role(Person.Role.valueOf(resultSet.getString("role")))
+                .blocked(resultSet.getBoolean("blocked"))
+                .build();
     }
 }
