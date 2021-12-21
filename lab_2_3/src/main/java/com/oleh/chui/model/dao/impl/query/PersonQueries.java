@@ -14,4 +14,8 @@ public class PersonQueries {
 
     public static final String DELETE = "DELETE FROM person WHERE id = ?";
 
+    public static final String BLOCK_USER_BY_ID = "UPDATE person SET blocked = true WHERE id = ?";
+
+    public static final String UNBLOCK_USER_BY_ID = "UPDATE person SET blocked = false WHERE id = ?";
+
 }

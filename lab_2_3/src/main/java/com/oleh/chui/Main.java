@@ -19,36 +19,27 @@ public class Main {
     public static void main(String[] args) {
 
         // TODO
-        // CHECK COPY (same login) DURING CREATING PERSON
-        // ADD UNIQUE CONSTRAINT FOR FIELD LOGIN IN DB
+        // DELETE toString for password (Person entity)
 
         char[] password = {'s', 'u', 'p', 'e', 'r', '_', 'P', 'r', 'o', 't', 'e', 'c', 't', 'i', 'o', 'n'};
         Person.Role role = Person.Role.USER;
         Person person = Person.builder()
-                .login("Giga")
+                .login("Stephan")
                 .password(password)
                 .email("HanG@gmail.com")
                 .role(Person.Role.USER)
                 .blocked(false)
                 .build();
 
-        Product product = new Product.Builder().setId(2).setName("Cow").setCategory("Animal")
-                .setPrice(BigDecimal.valueOf(1100)).setStartDate(LocalDate.now())
-                .setSize(Product.Size.SMALL).build();
+        Product product = new Product.Builder().setName("The World of the Wither").setCategory("Books")
+                .setPrice(BigDecimal.valueOf(200)).setStartDate(LocalDate.now())
+                .setSize(Product.Size.LARGE).build();
 
-        Ordering ordering = new Ordering(1, 1, 1, Ordering.Status.PAID);
+        Ordering ordering = new Ordering(1, 1, 1, Ordering.Status.REGISTERED);
 
         PersonDaoImpl personDao = new PersonDaoImpl();
         ProductDaoImpl productDao = new ProductDaoImpl();
         OrderingDaoImpl orderingDao = new OrderingDaoImpl();
-
-//        orderingDao.create(ordering);
-//        orderingDao.update(ordering);
-
-        Optional<Ordering> orderingFromDB = orderingDao.findById(1);
-
-
-        orderingFromDB.ifPresent(System.out::println);
 
     }
 

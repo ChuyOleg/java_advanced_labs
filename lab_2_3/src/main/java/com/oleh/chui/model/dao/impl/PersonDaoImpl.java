@@ -30,6 +30,7 @@ public class PersonDaoImpl implements PersonDao {
         } finally {
             ConnectionPoolHolder.closeConnection(connection);
         }
+
     }
 
     @Override
@@ -113,6 +114,37 @@ public class PersonDaoImpl implements PersonDao {
             statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException("Exception during deleting Person in DB", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+    }
+
+
+    @Override
+    public void blockUserById(int id) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(PersonQueries.BLOCK_USER_BY_ID)) {
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during blocking User in DB", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+    }
+
+    @Override
+    public void unblockUserById(int id) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(PersonQueries.UNBLOCK_USER_BY_ID)) {
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during unblocking User in DB" , e);
         } finally {
             ConnectionPoolHolder.closeConnection(connection);
         }

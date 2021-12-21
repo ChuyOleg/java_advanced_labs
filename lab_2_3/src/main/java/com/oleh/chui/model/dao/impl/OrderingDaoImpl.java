@@ -111,4 +111,34 @@ public class OrderingDaoImpl implements OrderingDao {
             ConnectionPoolHolder.closeConnection(connection);
         }
     }
+
+    @Override
+    public void changeStatusToPaidById(int id) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(OrderingQueries.CHANGE_STATUS_TO_PAID_BY_ID)) {
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during changing ordering status to Paid", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+    }
+
+    @Override
+    public void changeStatusToCanceledById(int id) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(OrderingQueries.CHANGE_STATUS_TO_CANCELED_BY_ID)) {
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during changing ordering status to Canceled", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+    }
 }
