@@ -36,28 +36,45 @@ public class Controller {
 
     private void startSearch() {
 
-        List<HandleDirectoryTask> tasks = new ArrayList<>();
+        BlockingQueue<File> dirs = new ArrayBlockingQueue<>(10);
 
-        File dir = getFilePathFromUser();
+        File main_dir = getFilePathFromUser();
 
         int min_value = getMinValueFromUser();
         int max_value = getMaxValueFromUser(min_value);
 
-        FindAllDirectoriesTask first_task = new FindAllDirectoriesTask(view, dir, tasks, min_value, max_value);
-
         try {
-            service.submit(first_task).get();
-            service.invokeAll(tasks);
+            List<Future<Object>> futures = runThreads(dirs, main_dir, min_value, max_value);
+
+            waitThreadsEnd(futures);
         } catch (InterruptedException | ExecutionException e) {
             view.printMessageLn(View.THREAD_EXECUTION_EXCEPTION);
         }
 
     }
 
-    private void closeProgram() {
-        service.shutdownNow();
-        view.printMessageLn(View.CLOSE_PROGRAM_MESSAGE);
-        System.exit(0);
+    private List<Future<Object>> runThreads(BlockingQueue<File> dirs, File main_dir, int min_value, int max_value) throws InterruptedException {
+        List<Future<Object>> futures = new ArrayList<>();
+
+        Future<Object> find_dirs_future = service.submit(new FindAllDirectoriesTask(view, dirs, main_dir));
+        futures.add(find_dirs_future);
+
+        while (true) {
+            File dir = dirs.take();
+            if (dir.getName().equals("")) {
+                break;
+            }
+            Future<Object> handle_future = service.submit(new HandleDirectoryTask(view, dir, min_value, max_value));
+            futures.add(handle_future);
+        }
+
+        return futures;
+    }
+
+    private void waitThreadsEnd(List<Future<Object>> futures) throws ExecutionException, InterruptedException {
+        for (Future<Object> future : futures) {
+            future.get();
+        }
     }
 
     private File getFilePathFromUser() {
@@ -82,6 +99,12 @@ public class Controller {
             if (max_value > min_value) return max_value;
             else view.printMessageLn(String.format(View.MAX_VALUE_MUST_BE_BIGGER, min_value));
         }
+    }
+
+    private void closeProgram() {
+        service.shutdownNow();
+        view.printMessageLn(View.CLOSE_PROGRAM_MESSAGE);
+        System.exit(0);
     }
 
 }
