@@ -12,16 +12,14 @@ import java.util.Properties;
 
 public class ConnectionPoolHolder {
 
-    private static final String DB_PROPERTIES = "/src/main/resources/db.properties";
+    private static final String DB_PROPERTIES = "C:/Users/User/java_advanced_labs/lab_2_3/src/main/resources/db.properties";
     private static volatile DataSource dataSource;
 
     public static DataSource getDataSource() {
         if (dataSource == null) {
             synchronized (ConnectionPoolHolder.class) {
                 if (dataSource == null) {
-                    String filePath = new File("").getAbsolutePath();
-
-                    try (FileReader reader = new FileReader(filePath + DB_PROPERTIES)) {
+                    try (FileReader reader = new FileReader(DB_PROPERTIES)) {
                         Properties p = new Properties();
                         p.load(reader);
                         BasicDataSource ds = new BasicDataSource();

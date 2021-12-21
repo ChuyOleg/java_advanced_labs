@@ -25,7 +25,8 @@ public class Person {
 
     public enum Role {
         ADMIN,
-        USER;
+        USER,
+        UNKNOWN;
 
         public String getValue() {
             return this.name();

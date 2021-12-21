@@ -49,4 +49,24 @@ public class ProductService {
                 .filter(product -> product.getSize().equals(size))
                 .collect(Collectors.toList());
     }
+
+    public void create(Product product) {
+        productDao.create(product);
+    }
+
+    public Product findById(int id) {
+        return productDao.findById(id).orElse(new Product());
+    }
+
+    public List<Product> findAll() {
+        return productDao.findAll();
+    }
+
+    public void update(Product product) {
+        productDao.update(product);
+    }
+
+    public void delete(int id) {
+        productDao.delete(id);
+    }
 }
