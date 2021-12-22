@@ -107,6 +107,26 @@ public class PersonDaoImpl implements PersonDao {
 
 
     @Override
+    public Optional<Person> findPersonByLoginAndPassword(String login, char[] password) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(PersonQueries.FIND_BY_LOGIN_AND_PASSWORD)) {
+            statement.setString(1, login);
+            statement.setString(2, String.valueOf(password));
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(buildPersonFromResultSet(resultSet));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during finding Person in DB by id", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+    }
+
+    @Override
     public void blockUserById(int id) {
         Connection connection = ConnectionPoolHolder.getConnection();
 

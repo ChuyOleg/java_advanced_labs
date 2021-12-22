@@ -1,8 +1,6 @@
 package com.oleh.chui.controller;
 
-import com.oleh.chui.controller.page.CatalogPage;
-import com.oleh.chui.controller.page.ProcessFilteringPage;
-import com.oleh.chui.controller.page.ProcessSortingPage;
+import com.oleh.chui.controller.page.*;
 import com.oleh.chui.model.service.ServiceFactory;
 
 import javax.servlet.ServletException;
@@ -19,7 +17,10 @@ public class ServletDispatcher extends HttpServlet {
         PageChain catalogPage = new CatalogPage(ServiceFactory.getInstance().createProductService());
         catalogPage
                 .linkWith(new ProcessFilteringPage(ServiceFactory.getInstance().createProductService()))
-                .linkWith(new ProcessSortingPage(ServiceFactory.getInstance().createProductService()));
+                .linkWith(new ProcessSortingPage(ServiceFactory.getInstance().createProductService()))
+                .linkWith(new AddToBasketPage(ServiceFactory.getInstance().createProductService()))
+                .linkWith(new BasketPage())
+                .linkWith(new LoginPage(ServiceFactory.getInstance().createPersonService()));
 
         catalogPage.processUri(req, resp);
 

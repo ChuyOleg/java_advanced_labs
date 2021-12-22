@@ -7,6 +7,8 @@ public class PersonQueries {
 
     public static final String FIND_BY_ID = "SELECT * FROM person WHERE id = ?";
 
+    public static final String FIND_BY_LOGIN_AND_PASSWORD = "SELECT * FROM person WHERE login = ? and password = ?";
+
     public static final String FIND_ALL = "SELECT * FROM person";
 
     public static final String UPDATE = "UPDATE person SET login = ?, password = ?, email = ?," +

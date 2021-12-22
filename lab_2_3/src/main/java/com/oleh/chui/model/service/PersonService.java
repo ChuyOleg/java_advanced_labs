@@ -21,6 +21,10 @@ public class PersonService {
         return personDao.findById(id).orElse(new Person());
     }
 
+    public Person findByLoginAndPassword(String login, char[] password) {
+        return personDao.findPersonByLoginAndPassword(login, password).orElse(new Person());
+    }
+
     public List<Person> findAll() {
         return personDao.findAll();
     }

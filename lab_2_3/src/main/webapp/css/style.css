@@ -1,3 +1,11 @@
+h1 {
+    text-align: center;
+}
+
+div.login-form {
+    text-align: center;
+}
+
 div.product-wrapper {
     margin: 20px auto;
     width: 50%;
@@ -20,6 +28,13 @@ form.save-to-basket {
     margin-bottom: 0;
 }
 
+div.saved-block {
+    text-align: center;
+    background: yellow;
+    border: 2px solid black;
+    margin-bottom: 0;
+}
+
 ul.filters {
     border: 2px solid black;
     width: 100px;
@@ -27,7 +42,6 @@ ul.filters {
 
 ul.filters-wrapper li {
     display: inline-block;
-    color: darkred;
 }
 
 form.filter-form {
@@ -40,4 +54,8 @@ form.sort-form {
     text-align: center;
     width: 200px;
     margin: auto;
+}
+
+.error {
+    color: red;
 }

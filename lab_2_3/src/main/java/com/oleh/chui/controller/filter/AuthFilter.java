@@ -16,11 +16,10 @@ public class AuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        HttpServletResponse resp = (HttpServletResponse) servletResponse;
         HttpSession session = req.getSession();
+
         if (session.getAttribute("role") == null) {
             session.setAttribute("role", Person.Role.UNKNOWN);
-            session.setAttribute("login", "Guest");
         }
 
         filterChain.doFilter(servletRequest, servletResponse);

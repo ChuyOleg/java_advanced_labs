@@ -9,7 +9,7 @@
     </style>
 </head>
 <body>
-    <h1 style="text-align: center">Catalog</h1>
+    <h1>Catalog</h1>
 
     <form class="filter-form" method="get" action="/catalog/filter">
     <ul class="filters-wrapper">
@@ -58,10 +58,17 @@
             <p class="productCategory"><c:out value="Category: ${product.category}" /></p>
             <p class="productSize"><c:out value="Size: ${product.size}" /></p>
             <p class="productStartDate"><c:out value="Date: ${product.startDate}" /></p>
-            <form class="save-to-basket" method="get" action="/catalog/saveToBasket">
-                <input type="text" name="id" value="${product.id}" hidden>
-                <input type="Submit" value="Save to basket">
-            </form>
+
+            <c:if test="${!sessionScope.basket.contains(product)}">
+                <form class="save-to-basket" method="get" action="/catalog/saveToBasket">
+                    <input type="text" name="id" value="${product.id}" hidden>
+                    <input type="Submit" value="Save to basket">
+                </form>
+            </c:if>
+
+            <c:if test="${sessionScope.basket.contains(product)}">
+                <div class="saved-block">Saved</div>
+            </c:if>
         </div>
     </c:forEach>
 
