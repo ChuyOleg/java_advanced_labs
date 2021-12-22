@@ -11,12 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-public class CatalogPage extends PageChainBase {
+public class ProcessFilteringPage extends PageChainBase {
 
     private final ProductService productService;
 
-    public CatalogPage(ProductService productService) {
+    public ProcessFilteringPage(ProductService productService) {
         this.productService = productService;
     }
 
@@ -26,21 +27,26 @@ public class CatalogPage extends PageChainBase {
         String uri = req.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
 
-        if (uri.equals("/catalog") && httpMethod.equals(HttpMethod.GET)) {
+        if (uri.equals("/catalog/filter") && httpMethod.equals(HttpMethod.GET)) {
             HttpSession session = req.getSession();
 
             List<Product> productList = productService.findAll();
 
-            session.setAttribute("productList", productList);
+            Map<String, String[]> filterMap = req.getParameterMap();
+
+            List<Product> filteredProductList = productService.filter(productList, filterMap);
+
+            session.setAttribute("productList", filteredProductList);
 
             try {
                 req.getRequestDispatcher("/catalog.jsp").forward(req, resp);
-            } catch (ServletException | IOException e) {
+            } catch (IOException | ServletException e) {
                 e.printStackTrace();
             }
 
         } else {
             processUtiNext(req, resp);
         }
+
     }
 }

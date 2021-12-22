@@ -4,8 +4,7 @@ import com.oleh.chui.model.dao.ProductDao;
 import com.oleh.chui.model.entity.Product;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProductService {
@@ -16,37 +15,78 @@ public class ProductService {
         this.productDao = productDao;
     }
 
-    public void sortByName(List<Product> products) {
-        products.sort(Comparator.comparing(Product::getName));
+    public void sort(List<Product> productList, String sortField) {
+        if (sortField != null) {
+            switch (sortField) {
+                case "name":
+                    sortByName(productList);
+                    break;
+                case "topPrice":
+                    sortByPriceDescending(productList);
+                    break;
+                case "lowPrice":
+                    sortByPriceAscending(productList);
+                    break;
+                case "date":
+                    sortByDate(productList);
+                    break;
+            }
+        }
     }
 
-    public void sortByPriceAscending(List<Product> products) {
-        products.sort(Comparator.comparing(Product::getPrice));
+    private void sortByName(List<Product> productList) {
+        productList.sort(Comparator.comparing(Product::getName));
     }
 
-    public void sortByPriceDescending(List<Product> products) {
-        products.sort(Comparator.comparing(Product::getPrice).reversed());
+    private void sortByPriceAscending(List<Product> productList) {
+        productList.sort(Comparator.comparing(Product::getPrice));
     }
 
-    public void sortByDate(List<Product> products) {
-        products.sort(Comparator.comparing(Product::getStartDate).reversed());
+    private void sortByPriceDescending(List<Product> productList) {
+        productList.sort(Comparator.comparing(Product::getPrice).reversed());
     }
 
-    public List<Product> filterByCategory(List<Product> products, String category) {
-        return products.stream()
-                .filter(product -> product.getCategory().equalsIgnoreCase(category))
+    private void sortByDate(List<Product> productList) {
+        productList.sort(Comparator.comparing(Product::getStartDate).reversed());
+    }
+
+    public List<Product> filter(List<Product> productList, Map<String, String[]> filterMap) {
+        String[] categories = filterMap.get("category[]");
+        String[] sizes = filterMap.get("size[]");
+        String minPriceString = filterMap.get("minPrice")[0];
+        String maxPriceString = filterMap.get("maxPrice")[0];
+
+        if (categories != null) {
+            productList = filterByCategory(productList, categories);
+        }
+        if (sizes != null) {
+            productList = filterBySize(productList, sizes);
+        }
+        if (!minPriceString.isEmpty() || !maxPriceString.isEmpty()) {
+            BigDecimal minPrice = minPriceString.isEmpty() ? BigDecimal.valueOf(Integer.MIN_VALUE) : BigDecimal.valueOf(Double.parseDouble(minPriceString));
+            BigDecimal maxPrice = maxPriceString.isEmpty() ? BigDecimal.valueOf(Integer.MAX_VALUE) : BigDecimal.valueOf(Double.parseDouble(maxPriceString));
+
+            productList = filterByPriceRange(productList, minPrice, maxPrice);
+        }
+
+        return productList;
+    }
+
+    private List<Product> filterByCategory(List<Product> productList, String[] categories) {
+        return productList.stream()
+                .filter(product -> Arrays.asList(categories).contains(product.getCategory()))
                 .collect(Collectors.toList());
     }
 
-    public List<Product> filterByPriceRange(List<Product> products, BigDecimal min, BigDecimal max) {
-        return products.stream()
+    private List<Product> filterByPriceRange(List<Product> productList, BigDecimal min, BigDecimal max) {
+        return productList.stream()
                 .filter(product -> product.getPrice().compareTo(min) >= 0 && product.getPrice().compareTo(max) <= 0)
                 .collect(Collectors.toList());
     }
 
-    public List<Product> filterBySize(List<Product> products, Product.Size size) {
-        return products.stream()
-                .filter(product -> product.getSize().equals(size))
+    private List<Product> filterBySize(List<Product> productList, String[] sizes) {
+        return productList.stream()
+                .filter(product -> Arrays.asList(sizes).contains(product.getSize().getValue()))
                 .collect(Collectors.toList());
     }
 
