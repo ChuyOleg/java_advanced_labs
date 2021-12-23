@@ -44,13 +44,6 @@ public class BasketPage extends PageChainBase {
     private void processGetMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        int personId = (int) session.getAttribute("id");
-
-        List<Product> productList = (List<Product>) session.getAttribute("basket");
-        List<Integer> idListOfOrderedProducts  = orderingService.getListOfOrderedProductsIdByPersonId(personId, productList);
-
-        req.setAttribute("idList", idListOfOrderedProducts);
-
         req.getRequestDispatcher(JspFilePath.BASKET).forward(req, resp);
     }
 

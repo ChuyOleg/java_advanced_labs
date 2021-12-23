@@ -83,13 +83,12 @@
 
     <c:forEach var="product" items="${sessionScope.productList}">
         <div class="product-wrapper">
-            <p class="productName"><c:out value="${product.name}" /></p>
-            <p class="productPrice"><c:out value="Price: ${product.price} " /></p>
-            <p class="productCategory"><c:out value="Category: ${product.category}" /></p>
-            <p class="productSize"><c:out value="Size: ${product.size}" /></p>
-            <p class="productStartDate"><c:out value="Date: ${product.startDate}" /></p>
-
             <c:if test="${!sessionScope.role.toString().equals('ADMIN')}">
+                <p class="productName"><c:out value="${product.name}" /></p>
+                <p class="productPrice"><c:out value="Price: ${product.price} " /></p>
+                <p class="productCategory"><c:out value="Category: ${product.category}" /></p>
+                <p class="productSize"><c:out value="Size: ${product.size}" /></p>
+                <p class="productStartDate"><c:out value="Date: ${product.startDate}" /></p>
                 <c:if test="${!sessionScope.basket.contains(product)}">
                     <form class="save-to-basket" method="post" action="/catalog/saveToBasket">
                         <input type="text" name="id" value="${product.id}" hidden>
@@ -100,13 +99,31 @@
                 <c:if test="${sessionScope.basket.contains(product)}">
                     <div class="saved-block">Saved</div>
                 </c:if>
+
             </c:if>
 
             <c:if test="${sessionScope.role.toString().equals('ADMIN')}">
-                <form class="update-product" method="post" action="/admin/productManagement">
+                <hr>
+                <form class="update-product-form" method="post" action="/admin/productManagement">
                     <input type="text" name="method" value="PUT" hidden>
                     <input type="text" name="id" value="${product.id}" hidden>
+
+                    <label for="name">Name</label><br>
+                    <input type="text" required name="name" value="${product.name}" maxlength="64" placeholder="Name" id="name"><br>
+
+                    <label for="price">Price</label><br>
+                    <input type="text" required name="price" value="${product.price}" placeholder="Price" id="price"><br>
+
+                    <label for="category">Category</label><br>
+                    <input type="text" required name="category" value="${product.category}" maxlength="64" placeholder="Category" id="category"><br>
+
+                    <label for="size">Size</label><br>
+                    <input type="text" name="size" value="${product.size}" id="size">
+
+                    <p class="productStartDate"><c:out value="Date: ${product.startDate}" /></p>
+
                     <input type="Submit" value="Update">
+
                 </form>
 
                 <form class="delete-product" method="post" action="/admin/productManagement">

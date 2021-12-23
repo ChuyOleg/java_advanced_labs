@@ -53,6 +53,9 @@ public class OrderingService {
         return statusMap;
     }
 
+
+    // TODO
+    // think about deleting
     public List<Integer> getListOfOrderedProductsIdByPersonId(int personId, List<Product> productList) {
         List<Integer> listOfOrderedProductsId = new ArrayList<>();
         productList.forEach(product -> {
