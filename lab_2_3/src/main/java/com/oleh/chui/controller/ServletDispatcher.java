@@ -20,6 +20,7 @@ public class ServletDispatcher extends HttpServlet {
                 .linkWith(new ProcessSortingPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new AddToBasketPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new BasketPage())
+                .linkWith(new RegistrationPage(ServiceFactory.getInstance().createPersonService()))
                 .linkWith(new LoginPage(ServiceFactory.getInstance().createPersonService()));
 
         catalogPage.processUri(req, resp);

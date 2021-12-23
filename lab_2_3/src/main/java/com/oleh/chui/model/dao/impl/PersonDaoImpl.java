@@ -4,10 +4,7 @@ import com.oleh.chui.model.dao.PersonDao;
 import com.oleh.chui.model.dao.impl.query.PersonQueries;
 import com.oleh.chui.model.entity.Person;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -124,6 +121,31 @@ public class PersonDaoImpl implements PersonDao {
         } finally {
             ConnectionPoolHolder.closeConnection(connection);
         }
+    }
+
+    @Override
+    public int createAndGetId(Person person) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                PersonQueries.CREATE_AND_GET_ID, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, person.getLogin());
+            statement.setString(2, String.valueOf(person.getPassword()));
+            statement.setString(3, person.getEmail());
+            statement.setString(4, person.getRole().getValue());
+            statement.setBoolean(5, person.getBlocked());
+
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during creation Person in DB", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+        throw new RuntimeException("Exception during creating new Person and getting id");
     }
 
     @Override

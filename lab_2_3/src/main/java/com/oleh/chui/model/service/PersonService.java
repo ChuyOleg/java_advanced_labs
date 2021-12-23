@@ -17,6 +17,10 @@ public class PersonService {
         personDao.create(person);
     }
 
+    public int createAndGetId(Person person) {
+        return personDao.createAndGetId(person);
+    }
+
     public Person findById(int id) {
         return personDao.findById(id).orElse(new Person());
     }

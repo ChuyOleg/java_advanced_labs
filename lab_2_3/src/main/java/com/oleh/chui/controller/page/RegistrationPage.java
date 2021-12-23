@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class LoginPage extends PageChainBase {
+public class RegistrationPage extends PageChainBase {
 
     private final PersonService personService;
 
-    public LoginPage(PersonService personService) {
+    public RegistrationPage(PersonService personService) {
         this.personService = personService;
     }
 
@@ -24,9 +24,9 @@ public class LoginPage extends PageChainBase {
         String uri = req.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
 
-        if (uri.equals("/login") && httpMethod.equals(HttpMethod.GET)) {
+        if (uri.equals("/registration") && httpMethod.equals(HttpMethod.GET)) {
             processGetMethod(req, resp);
-        } else if (uri.equals("/login") && httpMethod.equals(HttpMethod.POST)) {
+        } else if (uri.equals("/registration") && httpMethod.equals(HttpMethod.POST)) {
             processPostMethod(req, resp);
         } else {
             processUtiNext(req, resp);
@@ -35,7 +35,7 @@ public class LoginPage extends PageChainBase {
 
     public void processGetMethod(HttpServletRequest req,HttpServletResponse resp) {
         try {
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
@@ -46,20 +46,26 @@ public class LoginPage extends PageChainBase {
 
         String login = req.getParameter("login");
         char[] password = req.getParameter("password").toCharArray();
+        String email = req.getParameter("email");
 
-        Person person = personService.findByLoginAndPassword(login, password);
+        Person person = Person.builder().login(login).password(password).email(email)
+                .role(Person.Role.USER).blocked(false).build();
 
         try {
-            if (person.getId() != 0) {
-                session.setAttribute("id", person.getId());
+            try {
+                int personId = personService.createAndGetId(person);
+
+                session.setAttribute("id", personId);
                 session.setAttribute("role", person.getRole().getValue());
                 resp.sendRedirect("/catalog");
-            } else {
+            } catch (RuntimeException e) {
                 req.setAttribute("error", true);
-                req.getRequestDispatcher("/login.jsp").forward(req, resp);
+                req.getRequestDispatcher("/registration.jsp").forward(req, resp);
             }
-        } catch (ServletException | IOException e) {
+        } catch (IOException | ServletException e) {
             e.printStackTrace();
+
         }
     }
+
 }

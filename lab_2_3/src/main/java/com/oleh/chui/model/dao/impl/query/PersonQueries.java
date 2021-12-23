@@ -5,6 +5,9 @@ public class PersonQueries {
     public static final String CREATE = "INSERT INTO person(login, password, email, role, blocked)" +
             " values(?, ?, ?, ?, ?)";
 
+    public static final String CREATE_AND_GET_ID = "INSERT INTO person(login, password, email, role, blocked)" +
+            " values(?, ?, ?, ?, ?) RETURNING id";
+
     public static final String FIND_BY_ID = "SELECT * FROM person WHERE id = ?";
 
     public static final String FIND_BY_LOGIN_AND_PASSWORD = "SELECT * FROM person WHERE login = ? and password = ?";

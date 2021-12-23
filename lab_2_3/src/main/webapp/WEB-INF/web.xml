@@ -6,6 +6,10 @@
 
 <!--    Servlet config-->
 
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+    
     <servlet>
         <servlet-name>DispatcherServlet</servlet-name>
         <servlet-class>com.oleh.chui.controller.ServletDispatcher</servlet-class>

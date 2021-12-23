@@ -10,25 +10,27 @@
 </head>
 <body>
 
-<div class="login-form-wrapper">
-    <div class="login-form">
-        <h3>Log in to your account</h3>
-        <c:if test="${requestScope.error}">
-            <p class="error">Oops, that's not a match.</p>
-        </c:if>
-        <form method="post" action="/login">
+    <div class="login-form-wrapper">
+        <div class="login-form">
+            <h3>
+                Hello, log in or <a href="/registration">create new account</a>
+            </h3>
+            <c:if test="${requestScope.error}">
+                <p class="error">Oops, that's not a match.</p>
+            </c:if>
+            <form method="post" action="/login">
 
-            <label for="login">Login</label><br>
-            <input type="text" required name="login" minlength="3" maxlength="64" placeholder="Login" id="login"><br>
+                <label for="login">Login</label><br>
+                <input type="text" required name="login" minlength="3" maxlength="64" placeholder="Login" id="login"><br>
 
-            <label for="password">Password</label><br>
-            <input type="password" required name="password" minlength="4" maxlength="64" placeholder="Password" id="password"><br><br>
+                <label for="password">Password</label><br>
+                <input type="password" required name="password" minlength="4" maxlength="64" placeholder="Password" id="password"><br><br>
 
-            <input type="submit" value="Log in" class="login-button">
+                <input type="submit" value="Log in" class="login-button">
 
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
 </body>
 </html>

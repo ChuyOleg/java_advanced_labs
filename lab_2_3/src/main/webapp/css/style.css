@@ -6,6 +6,10 @@ div.login-form {
     text-align: center;
 }
 
+div.registration-form {
+    text-align: center;
+}
+
 div.product-wrapper {
     margin: 20px auto;
     width: 50%;
