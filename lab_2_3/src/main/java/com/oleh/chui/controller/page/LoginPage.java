@@ -50,7 +50,7 @@ public class LoginPage extends PageChainBase {
         if (person.getId() != 0) {
             session.setAttribute("id", person.getId());
             session.setAttribute("role", person.getRole().getValue());
-            resp.sendRedirect(JspFilePath.CATALOG);
+            resp.sendRedirect(PageURI.CATALOG);
         } else {
             req.setAttribute("error", true);
             req.getRequestDispatcher(JspFilePath.LOGIN).forward(req, resp);

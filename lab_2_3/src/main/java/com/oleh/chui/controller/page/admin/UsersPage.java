@@ -5,13 +5,11 @@ import com.oleh.chui.controller.page.util.JspFilePath;
 import com.oleh.chui.controller.page.util.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
 import com.oleh.chui.model.entity.Person;
-import com.oleh.chui.model.entity.Product;
 import com.oleh.chui.model.service.PersonService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,12 +26,13 @@ public class UsersPage extends PageChainBase {
 
         String uri = req.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
-        Person.Role role = Person.Role.valueOf((String) req.getSession().getAttribute("role"));
+
+        Person.Role role = Person.Role.valueOf(String.valueOf(req.getSession().getAttribute("role")));
 
         if (uri.equals(PageURI.ADMIN__USERS) && role.equals(Person.Role.ADMIN)
                 && httpMethod.equals(HttpMethod.GET)) {
 
-            List<Person> personList = personService.findAll();
+            List<Person> personList = personService.findOnlyUsers() ;
 
             req.setAttribute("personList", personList);
 

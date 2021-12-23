@@ -33,6 +33,10 @@ public class PersonService {
         return personDao.findAll();
     }
 
+    public List<Person> findOnlyUsers() {
+        return personDao.findOnlyUsers();
+    }
+
     public void update(Person person) {
         personDao.update(person);
     }

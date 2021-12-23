@@ -124,6 +124,26 @@ public class PersonDaoImpl implements PersonDao {
     }
 
     @Override
+    public List<Person> findOnlyUsers() {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(PersonQueries.FIND_ONLY_USERS)) {
+            ResultSet resultSet = statement.executeQuery();
+            List<Person> personList = new ArrayList<>();
+            while (resultSet.next()) {
+                Person person = buildPersonFromResultSet(resultSet);
+
+                personList.add(person);
+            }
+            return personList;
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during finding Only Users in DB", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+    }
+
+    @Override
     public int createAndGetId(Person person) {
         Connection connection = ConnectionPoolHolder.getConnection();
 

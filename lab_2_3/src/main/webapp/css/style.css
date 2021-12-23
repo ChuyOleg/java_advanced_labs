@@ -27,6 +27,19 @@ div.product-wrapper > p.productName {
     text-align: center;
 }
 
+div.person-wrapper {
+    margin: 20px auto;
+    width: 50%;
+}
+
+div.person-wrapper > p {
+    border: 2px solid black;
+    color: black;
+    padding: 5px;
+    margin: 0;
+    background: wheat;
+}
+
 form.save-to-basket {
     text-align: center;
     margin-bottom: 0;

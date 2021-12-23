@@ -54,7 +54,7 @@ public class RegistrationPage extends PageChainBase {
 
             session.setAttribute("id", personId);
             session.setAttribute("role", person.getRole().getValue());
-            resp.sendRedirect(JspFilePath.CATALOG);
+            resp.sendRedirect(PageURI.CATALOG);
         } catch (RuntimeException e) {
             req.setAttribute("error", true);
             req.getRequestDispatcher(JspFilePath.REGISTRATION).forward(req, resp);

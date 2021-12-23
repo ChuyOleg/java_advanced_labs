@@ -16,7 +16,7 @@ public class ProductService {
     }
 
     public void sort(List<Product> productList, String sortField) {
-        if (sortField != null) {
+        if (sortField != null && productList != null) {
             switch (sortField) {
                 case "name":
                     sortByName(productList);

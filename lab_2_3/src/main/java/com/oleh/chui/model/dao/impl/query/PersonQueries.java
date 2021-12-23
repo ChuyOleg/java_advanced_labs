@@ -14,6 +14,8 @@ public class PersonQueries {
 
     public static final String FIND_ALL = "SELECT * FROM person";
 
+    public static final String FIND_ONLY_USERS = "SELECT * FROM person WHERE role = 'USER'";
+
     public static final String UPDATE = "UPDATE person SET login = ?, password = ?, email = ?," +
             " role = ?, blocked = ? WHERE id = ?";
 
