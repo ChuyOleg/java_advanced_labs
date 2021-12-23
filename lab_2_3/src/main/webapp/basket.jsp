@@ -18,6 +18,14 @@
         </c:if>
     </div>
 
+    <c:if test="${!sessionScope.role.toString().equals('ADMIN')}">
+        <ul class="header user-header ">
+            <li><a href="/catalog">Catalog</a></li>
+            <li><a href="/basket">Basket</a></li>
+            <li><a href="/account">Account</a></li>
+        </ul>
+    </c:if>
+
     <h1>Basket</h1>
 
     <c:forEach var="product" items="${sessionScope.basket}">

@@ -18,6 +18,21 @@
         </c:if>
     </div>
 
+    <c:if test="${sessionScope.role.toString().equals('ADMIN')}">
+        <ul class="header admin-header">
+            <li><a href="/catalog">Catalog</a></li>
+            <li><a href="/admin/users">Users</a></li>
+        </ul>
+    </c:if>
+    <c:if test="${!sessionScope.role.toString().equals('ADMIN')}">
+        <ul class="header user-header ">
+            <li><a href="/catalog">Catalog</a></li>
+            <li><a href="/basket">Basket</a></li>
+            <li><a href="/account">Account</a></li>
+        </ul>
+    </c:if>
+
+
     <h1>Catalog</h1>
 
     <form class="filter-form" method="get" action="/catalog">

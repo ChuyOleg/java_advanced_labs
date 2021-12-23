@@ -18,6 +18,13 @@
         </c:if>
     </div>
 
+    <c:if test="${sessionScope.role.toString().equals('ADMIN')}">
+        <ul class="header admin-header">
+            <li><a href="/catalog">Catalog</a></li>
+            <li><a href="/admin/users">Users</a></li>
+        </ul>
+    </c:if>
+
     <h2>Create new Product</h2>
     <form class="create-product-form" method="post" action="/admin/productManagement">
         <input type="text" name="method" value="POST" hidden>

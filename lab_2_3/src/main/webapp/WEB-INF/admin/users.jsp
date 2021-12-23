@@ -18,6 +18,13 @@
         </c:if>
     </div>
 
+    <c:if test="${sessionScope.role.toString().equals('ADMIN')}">
+        <ul class="header admin-header">
+            <li><a href="/catalog">Catalog</a></li>
+            <li><a href="/admin/users">Users</a></li>
+        </ul>
+    </c:if>
+
     <c:forEach var="person" items="${requestScope.personList}">
         <div class="person-wrapper person-blocked-${person.blocked}">
             <p class="personLogin"><c:out value="${person.login}" /></p>
