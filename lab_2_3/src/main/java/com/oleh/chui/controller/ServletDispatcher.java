@@ -19,12 +19,13 @@ public class ServletDispatcher extends HttpServlet {
         PageChain catalogPage = new CatalogPage(ServiceFactory.getInstance().createProductService());
         catalogPage
                 .linkWith(new ProcessSortingPage(ServiceFactory.getInstance().createProductService()))
-                .linkWith(new AddToBasketPage(ServiceFactory.getInstance().createProductService()))
+                .linkWith(new SaveToBasketPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new BasketPage())
                 .linkWith(new RegistrationPage(ServiceFactory.getInstance().createPersonService()))
                 .linkWith(new LoginPage(ServiceFactory.getInstance().createPersonService()))
                 .linkWith(new UsersManagementPage(ServiceFactory.getInstance().createPersonService()))
-                .linkWith(new ProductManagementPage(ServiceFactory.getInstance().createProductService()));
+                .linkWith(new ProductManagementPage(ServiceFactory.getInstance().createProductService()))
+                .linkWith(new Logout());
 
         try {
             catalogPage.processUri(req, resp);

@@ -14,11 +14,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-public class AddToBasketPage extends PageChainBase {
+public class SaveToBasketPage extends PageChainBase {
 
     private final ProductService productService;
 
-    public AddToBasketPage(ProductService productService) {
+    public SaveToBasketPage(ProductService productService) {
         this.productService = productService;
     }
 
@@ -38,7 +38,7 @@ public class AddToBasketPage extends PageChainBase {
 
             basket.add(product);
 
-            resp.sendRedirect(JspFilePath.CATALOG);
+            resp.sendRedirect(PageURI.CATALOG);
 
         } else {
             processUtiNext(req, resp);

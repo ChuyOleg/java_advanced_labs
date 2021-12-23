@@ -10,7 +10,7 @@ public class PageURI {
 
     public static String LOGIN = "/login";
 
-    public static String CATALOG__FILTER = "/catalog/filter";
+    public static String LOGOUT = "/logout";
 
     public static String CATALOG__SORT = "/catalog/sort";
 
