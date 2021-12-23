@@ -92,6 +92,10 @@ div.person-wrapper > p {
     background: wheat;
 }
 
+p.status {
+    text-align: center;
+}
+
 div.person-blocked-false > p {
     background: limegreen;
 }
@@ -111,6 +115,13 @@ form.create-product {
 }
 
 div.saved-block {
+    text-align: center;
+    background: yellow;
+    border: 2px solid black;
+    margin-bottom: 0;
+}
+
+div.ordered-block {
     text-align: center;
     background: yellow;
     border: 2px solid black;

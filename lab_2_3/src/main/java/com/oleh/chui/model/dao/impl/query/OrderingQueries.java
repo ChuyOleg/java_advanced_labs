@@ -10,6 +10,12 @@ public class OrderingQueries {
 
     public static final String FIND_BY_ID = "SELECT * FROM ordering WHERE id = ?";
 
+    public static final String FIND_BY_PRODUCT_PERSON_ID = "SELECT id FROM ordering WHERE" +
+            " productId = ? and personId = ?";
+
+    public static final String FIND_STATUS_BY_PRODUCT_PERSON_ID = "SELECT status FROM ordering" +
+            " WHERE productId = ? and personId = ?";
+
     public static final String FIND_ALL = "SELECT * FROM ordering";
 
     public static final String UPDATE = "UPDATE ordering SET productId = ?, personId = ?, status = ? WHERE id = ?";

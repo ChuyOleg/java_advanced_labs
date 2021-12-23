@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class RegistrationPage extends PageChainBase {
 
@@ -47,19 +48,27 @@ public class RegistrationPage extends PageChainBase {
 
         String login = req.getParameter("login");
         char[] password = req.getParameter("password").toCharArray();
+        char[] passwordCopy = req.getParameter("passwordCopy").toCharArray();
         String email = req.getParameter("email");
 
-        Person person = Person.builder().login(login).password(password).email(email)
-                .role(Person.Role.USER).blocked(false).build();
-
         try {
-            int personId = personService.createAndGetId(person);
+            if (Arrays.equals(password, passwordCopy)) {
+                Person person = personService.buildStandardUserWithoutId(login, password, email);
 
-            session.setAttribute("id", personId);
-            session.setAttribute("role", person.getRole().getValue());
-            resp.sendRedirect(PageURI.CATALOG);
+                int personId = personService.createAndGetId(person);
+
+                session.setAttribute("id", personId);
+                session.setAttribute("role", person.getRole().getValue());
+                resp.sendRedirect(PageURI.CATALOG);
+            } else {
+                req.setAttribute("login", login);
+                req.setAttribute("email", email);
+                req.setAttribute("errorPassword", true);
+                req.getRequestDispatcher(JspFilePath.REGISTRATION).forward(req, resp);
+            }
         } catch (RuntimeException e) {
-            req.setAttribute("error", true);
+            req.setAttribute("email", email);
+            req.setAttribute("errorUserExist", true);
             req.getRequestDispatcher(JspFilePath.REGISTRATION).forward(req, resp);
         }
     }

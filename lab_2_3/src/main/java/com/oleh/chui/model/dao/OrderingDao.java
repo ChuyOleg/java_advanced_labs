@@ -8,4 +8,8 @@ public interface OrderingDao extends GenericDao<Ordering> {
 
     void changeStatusToCanceledById(int id);
 
+    Ordering.Status findStatusByProductIdAndPersonId(int productId, int personId);
+
+    boolean isExistByProductIdAndPersonId(int productId, int personId);
+
 }

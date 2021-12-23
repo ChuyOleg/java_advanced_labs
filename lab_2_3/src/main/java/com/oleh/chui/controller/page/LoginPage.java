@@ -51,9 +51,14 @@ public class LoginPage extends PageChainBase {
         Person person = personService.findByLoginAndPassword(login, password);
 
         if (person.getId() != 0) {
-            session.setAttribute("id", person.getId());
-            session.setAttribute("role", person.getRole().getValue());
-            resp.sendRedirect(PageURI.CATALOG);
+            if (!person.getBlocked()) {
+                session.setAttribute("id", person.getId());
+                session.setAttribute("role", person.getRole().getValue());
+                resp.sendRedirect(PageURI.CATALOG);
+            } else {
+                req.setAttribute("errorBlocked", true);
+                req.getRequestDispatcher(JspFilePath.LOGIN).forward(req, resp);
+            }
         } else {
             req.setAttribute("error", true);
             req.getRequestDispatcher(JspFilePath.LOGIN).forward(req, resp);

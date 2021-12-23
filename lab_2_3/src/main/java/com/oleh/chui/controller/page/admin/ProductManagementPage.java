@@ -69,5 +69,11 @@ public class ProductManagementPage extends PageChainBase {
     }
 
     private void processDeleteMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+        int productId = Integer.parseInt(req.getParameter("id"));
+
+        productService.delete(productId);
+
+        resp.sendRedirect(PageURI.CATALOG);
+
     }
 }

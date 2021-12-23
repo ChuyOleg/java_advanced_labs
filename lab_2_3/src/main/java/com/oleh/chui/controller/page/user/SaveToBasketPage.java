@@ -1,4 +1,4 @@
-package com.oleh.chui.controller.page;
+package com.oleh.chui.controller.page.user;
 
 import com.oleh.chui.controller.PageChainBase;
 import com.oleh.chui.controller.page.util.JspFilePath;

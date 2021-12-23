@@ -104,6 +104,27 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
+    @Override
+    public List<Product> findProductListByPersonId(int id) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(ProductQueries.FIND_PRODUCT_LIST_BY_PERSON_ID)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            List<Product> productList = new ArrayList<>();
+            while (resultSet.next()) {
+                Product product = buildProductFromResultSet(resultSet);
+
+                productList.add(product);
+            }
+            return productList;
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during finding products in DB by personId", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+    }
+
     private Product buildProductFromResultSet(ResultSet resultSet) throws SQLException {
         return new Product.Builder()
                 .setId(resultSet.getInt("id"))

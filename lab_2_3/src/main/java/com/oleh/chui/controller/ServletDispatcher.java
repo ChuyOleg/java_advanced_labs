@@ -3,6 +3,9 @@ package com.oleh.chui.controller;
 import com.oleh.chui.controller.page.*;
 import com.oleh.chui.controller.page.admin.ProductManagementPage;
 import com.oleh.chui.controller.page.admin.UsersManagementPage;
+import com.oleh.chui.controller.page.user.AccountPage;
+import com.oleh.chui.controller.page.user.BasketPage;
+import com.oleh.chui.controller.page.user.SaveToBasketPage;
 import com.oleh.chui.model.service.ServiceFactory;
 
 import javax.servlet.ServletException;
@@ -20,12 +23,14 @@ public class ServletDispatcher extends HttpServlet {
         catalogPage
                 .linkWith(new ProcessSortingPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new SaveToBasketPage(ServiceFactory.getInstance().createProductService()))
-                .linkWith(new BasketPage())
+                .linkWith(new BasketPage(ServiceFactory.getInstance().createOrderingService()))
                 .linkWith(new RegistrationPage(ServiceFactory.getInstance().createPersonService()))
                 .linkWith(new LoginPage(ServiceFactory.getInstance().createPersonService()))
                 .linkWith(new UsersManagementPage(ServiceFactory.getInstance().createPersonService()))
                 .linkWith(new ProductManagementPage(ServiceFactory.getInstance().createProductService()))
-                .linkWith(new Logout());
+                .linkWith(new LogoutPage())
+                .linkWith(new AccountPage(ServiceFactory.getInstance().createProductService(),
+                        ServiceFactory.getInstance().createOrderingService()));
 
         try {
             catalogPage.processUri(req, resp);
@@ -34,11 +39,12 @@ public class ServletDispatcher extends HttpServlet {
         }
 
         // TODO
-        // think about /catalog and /catalog/filter
-        // confirm password during registration
+        // make ordered product with 'ordered' label in basket
+        // clear ALL Session when exit from account (products in basket!!!!!) ?????
+        // think about blocked users
         // add logger
         // add validation of data
-        // crud product for admin
+        // update product
         // show orderings for user
         // error pages
 

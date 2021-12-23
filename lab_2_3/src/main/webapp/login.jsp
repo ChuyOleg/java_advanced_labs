@@ -18,7 +18,11 @@
             <c:if test="${requestScope.error}">
                 <p class="error">Oops, that's not a match.</p>
             </c:if>
+            <c:if test="${requestScope.errorBlocked}">
+                <p class="error">Your account is blocked.</p>
+            </c:if>
             <form method="post" action="/login">
+                <input type="text" name="method" value="POST" hidden>
 
                 <label for="login">Login</label><br>
                 <input type="text" required name="login" minlength="3" maxlength="64" placeholder="Login" id="login"><br>

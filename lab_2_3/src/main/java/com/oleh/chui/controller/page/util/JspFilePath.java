@@ -4,7 +4,9 @@ public class JspFilePath {
 
     public static String CATALOG = "/catalog.jsp";
 
-    public static String BASKET = "/basket.jsp";
+    public static String BASKET = "/WEB-INF/user/basket.jsp";
+
+    public static String ACCOUNT = "/WEB-INF/user/account.jsp";
 
     public static String LOGIN = "/login.jsp";
 

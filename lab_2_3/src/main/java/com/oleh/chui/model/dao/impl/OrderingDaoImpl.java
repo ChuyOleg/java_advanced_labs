@@ -132,6 +132,42 @@ public class OrderingDaoImpl implements OrderingDao {
         }
     }
 
+    @Override
+    public Ordering.Status findStatusByProductIdAndPersonId(int productId, int personId) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(OrderingQueries.FIND_STATUS_BY_PRODUCT_PERSON_ID)) {
+            statement.setInt(1, productId);
+            statement.setInt(2, personId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Ordering.Status.valueOf(resultSet.getString("status"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during finding status in DB by product and person id`s", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+        throw new RuntimeException(String.format("Ordering isn`t exist with" +
+                " productId = %s and personId = %s", productId, personId));
+    }
+
+    @Override
+    public boolean isExistByProductIdAndPersonId(int productId, int personId) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(OrderingQueries.FIND_BY_PRODUCT_PERSON_ID)) {
+            statement.setInt(1, productId);
+            statement.setInt(2, personId);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during finding status in DB by product and person id`s", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+    }
+
     private Ordering buildOrderingFromResultSet(ResultSet resultSet) throws SQLException {
         return Ordering.builder()
                 .id(resultSet.getInt("id"))

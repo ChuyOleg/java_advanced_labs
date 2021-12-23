@@ -52,4 +52,14 @@ public class PersonService {
             personDao.unblockUserById(id);
         }
     }
+
+    public Person buildStandardUserWithoutId(String login, char[] password, String email) {
+        return Person.builder()
+                .login(login)
+                .password(password)
+                .email(email)
+                .role(Person.Role.USER)
+                .blocked(false)
+                .build();
+    }
 }

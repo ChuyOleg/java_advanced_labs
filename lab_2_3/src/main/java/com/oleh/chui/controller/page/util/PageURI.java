@@ -6,6 +6,8 @@ public class PageURI {
 
     public static String BASKET = "/basket";
 
+    public static String ACCOUNT = "/account";
+
     public static String CATALOG = "/catalog";
 
     public static String LOGIN = "/login";

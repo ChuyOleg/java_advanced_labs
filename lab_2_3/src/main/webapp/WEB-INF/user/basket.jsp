@@ -35,10 +35,16 @@
             <p class="productCategory"><c:out value="Category: ${product.category}" /></p>
             <p class="productSize"><c:out value="Size: ${product.size}" /></p>
             <p class="productStartDate"><c:out value="Date: ${product.startDate}" /></p>
-<%--            <form class="save-to-basket" method="get" action="/catalog/saveToBasket">--%>
-<%--                <input type="text" name="id" value="${product.id}" hidden>--%>
-<%--                <input type="Submit" value="Save to basket">--%>
-<%--            </form>--%>
+            <c:if test="${!requestScope.idList.contains(product.id)}">
+                <form class="createOrdering" method="post" action="/basket">
+                    <input type="text" name="method" value="POST" hidden>
+                    <input type="text" name="id" value="${product.id}" hidden>
+                    <input type="Submit" value="Order">
+                </form>
+            </c:if>
+            <c:if test="${requestScope.idList.contains(product.id)}">
+                <div class="ordered-block">Ordered</div>
+            </c:if>
         </div>
     </c:forEach>
 </body>
