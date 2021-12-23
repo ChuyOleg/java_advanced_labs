@@ -9,16 +9,25 @@
     </style>
 </head>
 <body>
+    <div class="login-logout-block">
+        <c:if test="${sessionScope.role.toString().equals('UNKNOWN')}">
+            <a href="/login">Log in</a>
+        </c:if>
+        <c:if test="${!sessionScope.role.toString().equals('UNKNOWN')}">
+            <a href="/logout">Log out</a>
+        </c:if>
+    </div>
+
     <h1>Catalog</h1>
 
-    <form class="filter-form" method="get" action="/catalog/filter">
+    <form class="filter-form" method="get" action="/catalog">
     <ul class="filters-wrapper">
         <li>
             <label for="categoryFilter">Category</label><br>
             <select size="3" multiple name="category[]" id="categoryFilter">
-                <option value="Books">Books</option>
-                <option value="Alcohol">Alcohol</option>
-                <option value="Animal">Animal</option>
+                <c:forEach var="category" items="${requestScope.categorySet}">
+                    <option value="${category}">${category}</option>
+                </c:forEach>
             </select>
         </li>
         <li>
@@ -51,6 +60,12 @@
         <input type="submit" value="Sort">
     </form>
 
+    <c:if test="${sessionScope.role.equals('ADMIN')}">
+        <form class="create-product" method="get" action="/admin/productManagement">
+            <input type="Submit" value="Create new Product">
+        </form>
+    </c:if>
+
     <c:forEach var="product" items="${sessionScope.productList}">
         <div class="product-wrapper">
             <p class="productName"><c:out value="${product.name}" /></p>
@@ -59,16 +74,33 @@
             <p class="productSize"><c:out value="Size: ${product.size}" /></p>
             <p class="productStartDate"><c:out value="Date: ${product.startDate}" /></p>
 
-            <c:if test="${!sessionScope.basket.contains(product)}">
-                <form class="save-to-basket" method="get" action="/catalog/saveToBasket">
+            <c:if test="${!sessionScope.role.toString().equals('ADMIN')}">
+                <c:if test="${!sessionScope.basket.contains(product)}">
+                    <form class="save-to-basket" method="post" action="/catalog/saveToBasket">
+                        <input type="text" name="id" value="${product.id}" hidden>
+                        <input type="Submit" value="Save to basket">
+                    </form>
+                </c:if>
+
+                <c:if test="${sessionScope.basket.contains(product)}">
+                    <div class="saved-block">Saved</div>
+                </c:if>
+            </c:if>
+
+            <c:if test="${sessionScope.role.toString().equals('ADMIN')}">
+                <form class="update-product" method="post" action="/admin/productManagement">
+                    <input type="text" name="method" value="PUT" hidden>
                     <input type="text" name="id" value="${product.id}" hidden>
-                    <input type="Submit" value="Save to basket">
+                    <input type="Submit" value="Update">
+                </form>
+
+                <form class="delete-product" method="post" action="/admin/productManagement">
+                    <input type="text" name="method" value="DELETE" hidden>
+                    <input type="text" name="id" value="${product.id}" hidden>
+                    <input type="Submit" value="Delete">
                 </form>
             </c:if>
 
-            <c:if test="${sessionScope.basket.contains(product)}">
-                <div class="saved-block">Saved</div>
-            </c:if>
         </div>
     </c:forEach>
 

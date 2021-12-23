@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class UsersPage extends PageChainBase {
+public class UsersManagementPage extends PageChainBase {
 
     private final PersonService personService;
 
-    public UsersPage(PersonService personService) {
+    public UsersManagementPage(PersonService personService) {
         this.personService = personService;
     }
 
@@ -41,7 +41,7 @@ public class UsersPage extends PageChainBase {
 
     }
 
-    public void processGetMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+    private void processGetMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
         List<Person> personList = personService.findOnlyUsers();
 
         req.setAttribute("personList", personList);
@@ -49,7 +49,7 @@ public class UsersPage extends PageChainBase {
         req.getRequestDispatcher(JspFilePath.ADMIN__USERS).forward(req, resp);
     }
 
-    public void processPostMethod(HttpServletRequest req,HttpServletResponse resp) throws IOException {
+    private void processPostMethod(HttpServletRequest req,HttpServletResponse resp) throws IOException {
         int personId = Integer.parseInt(req.getParameter("id"));
         String blockOrUnblock = req.getParameter("action");
 

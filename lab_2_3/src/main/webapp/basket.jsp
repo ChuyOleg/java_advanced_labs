@@ -9,6 +9,15 @@
     </style>
 </head>
 <body>
+    <div class="login-logout-block">
+        <c:if test="${sessionScope.role.toString().equals('UNKNOWN')}">
+            <a href="/login">Log in</a>
+        </c:if>
+        <c:if test="${!sessionScope.role.toString().equals('UNKNOWN')}">
+            <a href="/logout">Log out</a>
+        </c:if>
+    </div>
+
     <h1>Basket</h1>
 
     <c:forEach var="product" items="${sessionScope.basket}">

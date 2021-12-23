@@ -1,7 +1,8 @@
 package com.oleh.chui.controller;
 
 import com.oleh.chui.controller.page.*;
-import com.oleh.chui.controller.page.admin.UsersPage;
+import com.oleh.chui.controller.page.admin.ProductManagementPage;
+import com.oleh.chui.controller.page.admin.UsersManagementPage;
 import com.oleh.chui.model.service.ServiceFactory;
 
 import javax.servlet.ServletException;
@@ -17,13 +18,13 @@ public class ServletDispatcher extends HttpServlet {
 
         PageChain catalogPage = new CatalogPage(ServiceFactory.getInstance().createProductService());
         catalogPage
-                .linkWith(new ProcessFilteringPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new ProcessSortingPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new AddToBasketPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new BasketPage())
                 .linkWith(new RegistrationPage(ServiceFactory.getInstance().createPersonService()))
                 .linkWith(new LoginPage(ServiceFactory.getInstance().createPersonService()))
-                .linkWith(new UsersPage(ServiceFactory.getInstance().createPersonService()));
+                .linkWith(new UsersManagementPage(ServiceFactory.getInstance().createPersonService()))
+                .linkWith(new ProductManagementPage(ServiceFactory.getInstance().createProductService()));
 
         try {
             catalogPage.processUri(req, resp);
@@ -32,10 +33,12 @@ public class ServletDispatcher extends HttpServlet {
         }
 
         // TODO
-        // addToBasketPage change get method to post
+        // think about /catalog and /catalog/filter
+        // confirm password during registration
+        // add logger
+        // add validation of data
         // crud product for admin
         // show orderings for user
-        // block / unblock users
         // error pages
 
     }

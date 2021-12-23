@@ -25,9 +25,8 @@ public class RegistrationPage extends PageChainBase {
     public void processUri(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
-        Person.Role role = Person.Role.valueOf(String.valueOf(req.getSession().getAttribute("role")));
 
-        if (uri.equals(PageURI.REGISTRATION) && role.equals(Person.Role.UNKNOWN)) {
+        if (uri.equals(PageURI.REGISTRATION)) {
             if (httpMethod.equals(HttpMethod.GET)) {
                 processGetMethod(req, resp);
             } else if (httpMethod.equals(HttpMethod.POST)) {
@@ -38,11 +37,11 @@ public class RegistrationPage extends PageChainBase {
         }
     }
 
-    public void processGetMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+    private void processGetMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher(JspFilePath.REGISTRATION).forward(req, resp);
     }
 
-    public void processPostMethod(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    private void processPostMethod(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         HttpSession session = req.getSession();
 
         String login = req.getParameter("login");

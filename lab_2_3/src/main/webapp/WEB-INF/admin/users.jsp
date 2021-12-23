@@ -9,22 +9,30 @@
     </style>
 </head>
 <body>
-
-<c:forEach var="person" items="${requestScope.personList}">
-    <div class="person-wrapper person-blocked-${person.blocked}">
-        <p class="personLogin"><c:out value="${person.login}" /></p>
-        <p class="personEmail"><c:out value="${person.email}" /></p>
-        <form class="block-unblock-form" method="post" action="">
-            <input type="text" name="id" value="${person.id}" hidden>
-            <c:if test="${person.blocked}">
-                <input type="submit" name="action" value="Unblock">
-            </c:if>
-            <c:if test="${!person.blocked}">
-                <input type="submit" name="action" value="Block">
-            </c:if>
-        </form>
+    <div class="login-logout-block">
+        <c:if test="${sessionScope.role.toString().equals('UNKNOWN')}">
+            <a href="/login">Log in</a>
+        </c:if>
+        <c:if test="${!sessionScope.role.toString().equals('UNKNOWN')}">
+            <a href="/logout">Log out</a>
+        </c:if>
     </div>
-</c:forEach>
+
+    <c:forEach var="person" items="${requestScope.personList}">
+        <div class="person-wrapper person-blocked-${person.blocked}">
+            <p class="personLogin"><c:out value="${person.login}" /></p>
+            <p class="personEmail"><c:out value="${person.email}" /></p>
+            <form class="block-unblock-form" method="post" action="">
+                <input type="text" name="id" value="${person.id}" hidden>
+                <c:if test="${person.blocked}">
+                    <input type="submit" name="action" value="Unblock">
+                </c:if>
+                <c:if test="${!person.blocked}">
+                    <input type="submit" name="action" value="Block">
+                </c:if>
+            </form>
+        </div>
+    </c:forEach>
 
 </body>
 </html>

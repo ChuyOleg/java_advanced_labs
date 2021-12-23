@@ -17,4 +17,6 @@ public class PageURI {
     public static String REGISTRATION = "/registration";
 
     public static String ADMIN__USERS = "/admin/users";
+
+    public static String ADMIN__PRODUCT_MANAGEMENT = "/admin/productManagement";
 }

@@ -27,7 +27,7 @@ public class AddToBasketPage extends PageChainBase {
         String uri = req.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
 
-        if (uri.equals(PageURI.CATALOG__SAVE_TO_BASKET) && httpMethod.equals(HttpMethod.GET)) {
+        if (uri.equals(PageURI.CATALOG__SAVE_TO_BASKET) && httpMethod.equals(HttpMethod.POST)) {
             HttpSession session = req.getSession();
 
             int productId = Integer.parseInt(req.getParameter("id"));
@@ -38,7 +38,7 @@ public class AddToBasketPage extends PageChainBase {
 
             basket.add(product);
 
-            req.getRequestDispatcher(JspFilePath.CATALOG).forward(req, resp);
+            resp.sendRedirect(JspFilePath.CATALOG);
 
         } else {
             processUtiNext(req, resp);

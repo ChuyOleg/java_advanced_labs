@@ -53,19 +53,18 @@ public class ProductService {
     public List<Product> filter(List<Product> productList, Map<String, String[]> filterMap) {
         String[] categories = filterMap.get("category[]");
         String[] sizes = filterMap.get("size[]");
-        String minPriceString = filterMap.get("minPrice")[0];
-        String maxPriceString = filterMap.get("maxPrice")[0];
+        String[] minPriceStringList = filterMap.get("minPrice");
+        String[] maxPriceStringList = filterMap.get("maxPrice");
 
-        if (categories != null) {
-            productList = filterByCategory(productList, categories);
-        }
-        if (sizes != null) {
-            productList = filterBySize(productList, sizes);
-        }
-        if (!minPriceString.isEmpty() || !maxPriceString.isEmpty()) {
-            BigDecimal minPrice = minPriceString.isEmpty() ? BigDecimal.valueOf(Integer.MIN_VALUE) : BigDecimal.valueOf(Double.parseDouble(minPriceString));
-            BigDecimal maxPrice = maxPriceString.isEmpty() ? BigDecimal.valueOf(Integer.MAX_VALUE) : BigDecimal.valueOf(Double.parseDouble(maxPriceString));
+        BigDecimal minPrice = minPriceStringList == null || minPriceStringList[0].isEmpty() ?
+                BigDecimal.valueOf(Integer.MIN_VALUE) : BigDecimal.valueOf(Integer.parseInt(minPriceStringList[0]));
 
+        BigDecimal maxPrice = maxPriceStringList == null || maxPriceStringList[0].isEmpty() ?
+                BigDecimal.valueOf(Integer.MAX_VALUE) : BigDecimal.valueOf(Integer.parseInt(maxPriceStringList[0]));
+
+        if (categories != null) productList = filterByCategory(productList, categories);
+        if (sizes != null) productList = filterBySize(productList, sizes);
+        if (!minPrice.equals(BigDecimal.valueOf(Integer.MIN_VALUE)) || !maxPrice.equals(BigDecimal.valueOf(Integer.MAX_VALUE))) {
             productList = filterByPriceRange(productList, minPrice, maxPrice);
         }
 
@@ -88,6 +87,12 @@ public class ProductService {
         return productList.stream()
                 .filter(product -> Arrays.asList(sizes).contains(product.getSize().getValue()))
                 .collect(Collectors.toList());
+    }
+
+    public Set<String> getCategorySet(List<Product> productList) {
+        Set<String> categorySet = new TreeSet<>();
+        productList.forEach(product -> categorySet.add(product.getCategory()));
+        return categorySet;
     }
 
     public void create(Product product) {

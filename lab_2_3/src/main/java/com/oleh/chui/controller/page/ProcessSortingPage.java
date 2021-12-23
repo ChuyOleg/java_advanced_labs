@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public class ProcessSortingPage extends PageChainBase {
 
@@ -31,13 +32,13 @@ public class ProcessSortingPage extends PageChainBase {
         if (uri.equals(PageURI.CATALOG__SORT) && httpMethod.equals(HttpMethod.GET)) {
             HttpSession session = req.getSession();
 
-            Object productListObject = session.getAttribute("productList");
-            List<Product> productList = (List<Product>) productListObject;
+            List<Product> productList = (List<Product>) session.getAttribute("productList");
+            Set<String> categorySet = productService.getCategorySet(productService.findAll());
 
             String sortField = req.getParameter("sortField");
 
             productService.sort(productList, sortField);
-
+            req.setAttribute("categorySet", categorySet);
             req.getRequestDispatcher(JspFilePath.CATALOG).forward(req, resp);
 
         } else {

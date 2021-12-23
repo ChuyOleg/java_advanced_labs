@@ -1,8 +1,31 @@
-h1 {
+h1, h2 {
     text-align: center;
 }
 
+div.login-logout-block {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 2px solid black;
+    background: cadetblue;
+}
+
+div.login-logout-block:hover {
+    background: dodgerblue;
+}
+
+div.login-logout-block a {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: black;
+}
+
 div.login-form {
+    text-align: center;
+}
+
+form.create-product-form {
     text-align: center;
 }
 
@@ -48,9 +71,15 @@ div.person-blocked-true > p {
     background: lightcoral;
 }
 
-form.save-to-basket {
+div.product-wrapper form {
     text-align: center;
     margin-bottom: 0;
+}
+
+form.create-product {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 div.saved-block {
