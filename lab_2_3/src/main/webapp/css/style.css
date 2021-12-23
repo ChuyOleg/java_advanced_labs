@@ -29,7 +29,7 @@ div.product-wrapper > p.productName {
 
 div.person-wrapper {
     margin: 20px auto;
-    width: 50%;
+    width: 30%;
 }
 
 div.person-wrapper > p {
@@ -38,6 +38,14 @@ div.person-wrapper > p {
     padding: 5px;
     margin: 0;
     background: wheat;
+}
+
+div.person-blocked-false > p {
+    background: limegreen;
+}
+
+div.person-blocked-true > p {
+    background: lightcoral;
 }
 
 form.save-to-basket {
@@ -71,6 +79,23 @@ form.sort-form {
     text-align: center;
     width: 200px;
     margin: auto;
+}
+
+a.login-guest {
+    display: inline-block;
+    border: 2px solid black;
+    text-decoration: none;
+    padding: 10px;
+    color: black;
+    border-radius: 5px;
+}
+
+a.login-guest:hover {
+    background: palegoldenrod;
+}
+
+form.block-unblock-form {
+    text-align: center;
 }
 
 .error {

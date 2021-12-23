@@ -29,18 +29,32 @@ public class UsersPage extends PageChainBase {
 
         Person.Role role = Person.Role.valueOf(String.valueOf(req.getSession().getAttribute("role")));
 
-        if (uri.equals(PageURI.ADMIN__USERS) && role.equals(Person.Role.ADMIN)
-                && httpMethod.equals(HttpMethod.GET)) {
-
-            List<Person> personList = personService.findOnlyUsers() ;
-
-            req.setAttribute("personList", personList);
-
-            req.getRequestDispatcher(JspFilePath.ADMIN__USERS).forward(req, resp);
-
+        if (uri.equals(PageURI.ADMIN__USERS) && role.equals(Person.Role.ADMIN)) {
+            if (httpMethod.equals(HttpMethod.GET)) {
+                processGetMethod(req, resp);
+            } else if (httpMethod.equals(HttpMethod.POST)) {
+                processPostMethod(req, resp);
+            }
         } else {
             processUtiNext(req, resp);
         }
 
+    }
+
+    public void processGetMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+        List<Person> personList = personService.findOnlyUsers();
+
+        req.setAttribute("personList", personList);
+
+        req.getRequestDispatcher(JspFilePath.ADMIN__USERS).forward(req, resp);
+    }
+
+    public void processPostMethod(HttpServletRequest req,HttpServletResponse resp) throws IOException {
+        int personId = Integer.parseInt(req.getParameter("id"));
+        String blockOrUnblock = req.getParameter("action");
+
+        personService.blockOrUnblockUserById(personId, blockOrUnblock);
+
+        resp.sendRedirect(PageURI.ADMIN__USERS);
     }
 }

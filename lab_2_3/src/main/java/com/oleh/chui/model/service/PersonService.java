@@ -45,11 +45,11 @@ public class PersonService {
         personDao.delete(id);
     }
 
-    public void blockUserById(int id) {
-        personDao.blockUserById(id);
-    }
-
-    public void unblockUserById(int id) {
-        personDao.unblockUserById(id);
+    public void blockOrUnblockUserById(int id, String action) {
+        if (action.equals("Block")) {
+            personDao.blockUserById(id);
+        } else if (action.equals("Unblock")) {
+            personDao.unblockUserById(id);
+        }
     }
 }

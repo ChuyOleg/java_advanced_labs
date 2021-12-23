@@ -25,11 +25,14 @@ public class LoginPage extends PageChainBase {
     public void processUri(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
+        Person.Role role = Person.Role.valueOf(String.valueOf(req.getSession().getAttribute("role")));
 
-        if (uri.equals(PageURI.LOGIN) && httpMethod.equals(HttpMethod.GET)) {
-            processGetMethod(req, resp);
-        } else if (uri.equals(PageURI.LOGIN) && httpMethod.equals(HttpMethod.POST)) {
-            processPostMethod(req, resp);
+        if (uri.equals(PageURI.LOGIN) && role.equals(Person.Role.UNKNOWN)) {
+            if (httpMethod.equals(HttpMethod.GET)) {
+                processGetMethod(req, resp);
+            } else if (httpMethod.equals(HttpMethod.POST)) {
+                processPostMethod(req, resp);
+            }
         } else {
             processUtiNext(req, resp);
         }

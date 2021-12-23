@@ -29,6 +29,8 @@
                 <input type="submit" value="Log in" class="login-button">
 
             </form>
+
+            <a class="login-guest" href="/catalog">Log in as a Guest</a>
         </div>
     </div>
 

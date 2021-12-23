@@ -31,5 +31,12 @@ public class ServletDispatcher extends HttpServlet {
             e.printStackTrace();
         }
 
+        // TODO
+        // addToBasketPage change get method to post
+        // crud product for admin
+        // show orderings for user
+        // block / unblock users
+        // error pages
+
     }
 }

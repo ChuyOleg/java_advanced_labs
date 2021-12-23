@@ -11,15 +11,18 @@
 <body>
 
 <c:forEach var="person" items="${requestScope.personList}">
-    <div class="person-wrapper">
+    <div class="person-wrapper person-blocked-${person.blocked}">
         <p class="personLogin"><c:out value="${person.login}" /></p>
         <p class="personEmail"><c:out value="${person.email}" /></p>
-        <c:if test="${person.blocked}">
-            <div class="unblock-button">Unblock</div>
-        </c:if>
-        <c:if test="${!person.blocked}">
-            <div class="block-button">Block</div>
-        </c:if>
+        <form class="block-unblock-form" method="post" action="">
+            <input type="text" name="id" value="${person.id}" hidden>
+            <c:if test="${person.blocked}">
+                <input type="submit" name="action" value="Unblock">
+            </c:if>
+            <c:if test="${!person.blocked}">
+                <input type="submit" name="action" value="Block">
+            </c:if>
+        </form>
     </div>
 </c:forEach>
 
