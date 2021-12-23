@@ -1,6 +1,7 @@
 package com.oleh.chui.controller;
 
 import com.oleh.chui.controller.page.*;
+import com.oleh.chui.controller.page.admin.UsersPage;
 import com.oleh.chui.model.service.ServiceFactory;
 
 import javax.servlet.ServletException;
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class ServletDispatcher extends HttpServlet {
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) {
 
         PageChain catalogPage = new CatalogPage(ServiceFactory.getInstance().createProductService());
         catalogPage
@@ -21,9 +22,14 @@ public class ServletDispatcher extends HttpServlet {
                 .linkWith(new AddToBasketPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new BasketPage())
                 .linkWith(new RegistrationPage(ServiceFactory.getInstance().createPersonService()))
-                .linkWith(new LoginPage(ServiceFactory.getInstance().createPersonService()));
+                .linkWith(new LoginPage(ServiceFactory.getInstance().createPersonService()))
+                .linkWith(new UsersPage(ServiceFactory.getInstance().createPersonService()));
 
-        catalogPage.processUri(req, resp);
+        try {
+            catalogPage.processUri(req, resp);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

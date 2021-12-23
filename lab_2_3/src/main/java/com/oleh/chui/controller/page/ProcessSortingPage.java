@@ -1,6 +1,8 @@
 package com.oleh.chui.controller.page;
 
 import com.oleh.chui.controller.PageChainBase;
+import com.oleh.chui.controller.page.util.JspFilePath;
+import com.oleh.chui.controller.page.util.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
 import com.oleh.chui.model.entity.Product;
 import com.oleh.chui.model.service.ProductService;
@@ -22,12 +24,12 @@ public class ProcessSortingPage extends PageChainBase {
     }
 
     @Override
-    public void processUri(HttpServletRequest req, HttpServletResponse resp) {
+    public void processUri(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String uri = req.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
 
-        if (uri.equals("/catalog/sort") && httpMethod.equals(HttpMethod.GET)) {
+        if (uri.equals(PageURI.CATALOG__SORT) && httpMethod.equals(HttpMethod.GET)) {
             HttpSession session = req.getSession();
 
             Object productListObject = session.getAttribute("productList");
@@ -37,11 +39,7 @@ public class ProcessSortingPage extends PageChainBase {
 
             productService.sort(productList, sortField);
 
-            try {
-                req.getRequestDispatcher("/catalog.jsp").forward(req, resp);
-            } catch (IOException | ServletException e) {
-                e.printStackTrace();
-            }
+            req.getRequestDispatcher(JspFilePath.CATALOG).forward(req, resp);
 
         } else {
             processUtiNext(req, resp);

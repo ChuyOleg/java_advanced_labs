@@ -1,11 +1,12 @@
-package com.oleh.chui.controller.page;
+package com.oleh.chui.controller.page.admin;
 
 import com.oleh.chui.controller.PageChainBase;
 import com.oleh.chui.controller.page.util.JspFilePath;
 import com.oleh.chui.controller.page.util.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
+import com.oleh.chui.model.entity.Person;
 import com.oleh.chui.model.entity.Product;
-import com.oleh.chui.model.service.ProductService;
+import com.oleh.chui.model.service.PersonService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,12 +15,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-public class CatalogPage extends PageChainBase {
+public class UsersPage extends PageChainBase {
 
-    private final ProductService productService;
+    private final PersonService personService;
 
-    public CatalogPage(ProductService productService) {
-        this.productService = productService;
+    public UsersPage(PersonService personService) {
+        this.personService = personService;
     }
 
     @Override
@@ -27,18 +28,20 @@ public class CatalogPage extends PageChainBase {
 
         String uri = req.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
+        Person.Role role = Person.Role.valueOf((String) req.getSession().getAttribute("role"));
 
-        if (uri.equals(PageURI.CATALOG) && httpMethod.equals(HttpMethod.GET)) {
-            HttpSession session = req.getSession();
+        if (uri.equals(PageURI.ADMIN__USERS) && role.equals(Person.Role.ADMIN)
+                && httpMethod.equals(HttpMethod.GET)) {
 
-            List<Product> productList = productService.findAll();
+            List<Person> personList = personService.findAll();
 
-            session.setAttribute("productList", productList);
+            req.setAttribute("personList", personList);
 
-            req.getRequestDispatcher(JspFilePath.CATALOG).forward(req, resp);
+            req.getRequestDispatcher(JspFilePath.ADMIN__USERS).forward(req, resp);
 
         } else {
             processUtiNext(req, resp);
         }
+
     }
 }

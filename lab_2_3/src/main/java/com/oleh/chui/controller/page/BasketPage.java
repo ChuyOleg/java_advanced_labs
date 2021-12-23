@@ -1,6 +1,8 @@
 package com.oleh.chui.controller.page;
 
 import com.oleh.chui.controller.PageChainBase;
+import com.oleh.chui.controller.page.util.JspFilePath;
+import com.oleh.chui.controller.page.util.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
 
 import javax.servlet.ServletException;
@@ -11,17 +13,12 @@ import java.io.IOException;
 public class BasketPage extends PageChainBase {
 
     @Override
-    public void processUri(HttpServletRequest req, HttpServletResponse resp) {
+    public void processUri(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
 
-        if (uri.equals("/basket") && httpMethod.equals(HttpMethod.GET)) {
-            try {
-                req.getRequestDispatcher("/basket.jsp").forward(req, resp);
-            } catch (ServletException | IOException e) {
-                e.printStackTrace();
-            }
-
+        if (uri.equals(PageURI.BASKET) && httpMethod.equals(HttpMethod.GET)) {
+            req.getRequestDispatcher(JspFilePath.BASKET).forward(req, resp);
         } else {
             processUtiNext(req, resp);
         }

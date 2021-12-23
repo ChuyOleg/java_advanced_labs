@@ -1,6 +1,8 @@
 package com.oleh.chui.controller.page;
 
 import com.oleh.chui.controller.PageChainBase;
+import com.oleh.chui.controller.page.util.JspFilePath;
+import com.oleh.chui.controller.page.util.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
 import com.oleh.chui.model.entity.Person;
 import com.oleh.chui.model.service.PersonService;
@@ -20,28 +22,24 @@ public class RegistrationPage extends PageChainBase {
     }
 
     @Override
-    public void processUri(HttpServletRequest req, HttpServletResponse resp) {
+    public void processUri(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI();
         HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
 
-        if (uri.equals("/registration") && httpMethod.equals(HttpMethod.GET)) {
+        if (uri.equals(PageURI.REGISTRATION) && httpMethod.equals(HttpMethod.GET)) {
             processGetMethod(req, resp);
-        } else if (uri.equals("/registration") && httpMethod.equals(HttpMethod.POST)) {
+        } else if (uri.equals(PageURI.REGISTRATION) && httpMethod.equals(HttpMethod.POST)) {
             processPostMethod(req, resp);
         } else {
             processUtiNext(req, resp);
         }
     }
 
-    public void processGetMethod(HttpServletRequest req,HttpServletResponse resp) {
-        try {
-            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        }
+    public void processGetMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher(JspFilePath.REGISTRATION).forward(req, resp);
     }
 
-    public void processPostMethod(HttpServletRequest req, HttpServletResponse resp) {
+    public void processPostMethod(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         HttpSession session = req.getSession();
 
         String login = req.getParameter("login");
@@ -52,19 +50,14 @@ public class RegistrationPage extends PageChainBase {
                 .role(Person.Role.USER).blocked(false).build();
 
         try {
-            try {
-                int personId = personService.createAndGetId(person);
+            int personId = personService.createAndGetId(person);
 
-                session.setAttribute("id", personId);
-                session.setAttribute("role", person.getRole().getValue());
-                resp.sendRedirect("/catalog");
-            } catch (RuntimeException e) {
-                req.setAttribute("error", true);
-                req.getRequestDispatcher("/registration.jsp").forward(req, resp);
-            }
-        } catch (IOException | ServletException e) {
-            e.printStackTrace();
-
+            session.setAttribute("id", personId);
+            session.setAttribute("role", person.getRole().getValue());
+            resp.sendRedirect(JspFilePath.CATALOG);
+        } catch (RuntimeException e) {
+            req.setAttribute("error", true);
+            req.getRequestDispatcher(JspFilePath.REGISTRATION).forward(req, resp);
         }
     }
 
