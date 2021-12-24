@@ -1,8 +1,8 @@
 package com.oleh.chui.controller.page;
 
 import com.oleh.chui.controller.PageChainBase;
-import com.oleh.chui.controller.page.util.JspFilePath;
-import com.oleh.chui.controller.page.util.PageURI;
+import com.oleh.chui.controller.page.path.JspFilePath;
+import com.oleh.chui.controller.page.path.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
 import com.oleh.chui.model.entity.Person;
 import com.oleh.chui.model.service.PersonService;
@@ -24,7 +24,7 @@ public class LoginPage extends PageChainBase {
     @Override
     public void processUri(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI();
-        HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
+        HttpMethod httpMethod = req.getMethod().equals("GET") ? HttpMethod.GET : HttpMethod.valueOf(req.getParameter("method"));
         Person.Role role = Person.Role.valueOf(String.valueOf(req.getSession().getAttribute("role")));
 
         if (uri.equals(PageURI.LOGIN) && role.equals(Person.Role.UNKNOWN)) {

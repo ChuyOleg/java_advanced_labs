@@ -1,8 +1,8 @@
 package com.oleh.chui.controller.page.admin;
 
 import com.oleh.chui.controller.PageChainBase;
-import com.oleh.chui.controller.page.util.JspFilePath;
-import com.oleh.chui.controller.page.util.PageURI;
+import com.oleh.chui.controller.page.path.JspFilePath;
+import com.oleh.chui.controller.page.path.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
 import com.oleh.chui.model.entity.Ordering;
 import com.oleh.chui.model.entity.Person;

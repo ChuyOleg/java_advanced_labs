@@ -45,15 +45,12 @@ public class ServletDispatcher extends HttpServlet {
 
         // TODO
         // change everywhere way of getting httpMethod (post => post | put | delete)
-        // think about bag when open login page don't using logout button
+        // think about bug when open login page don't using logout button
         // add validation for every post/update form
-        // make ordered product with 'ordered' label in basket
         // clear ALL Session when exit from account (products in basket!!!!!) ?????
         // think about blocked users
         // add logger
         // add validation of data
-        // update product
-        // show orderings for user
         // error pages
 
     }

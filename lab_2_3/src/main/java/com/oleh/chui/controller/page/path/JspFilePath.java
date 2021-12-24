@@ -1,4 +1,4 @@
-package com.oleh.chui.controller.page.util;
+package com.oleh.chui.controller.page.path;
 
 public class JspFilePath {
 

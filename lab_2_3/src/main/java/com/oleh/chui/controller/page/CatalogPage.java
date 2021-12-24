@@ -1,8 +1,8 @@
 package com.oleh.chui.controller.page;
 
 import com.oleh.chui.controller.PageChainBase;
-import com.oleh.chui.controller.page.util.JspFilePath;
-import com.oleh.chui.controller.page.util.PageURI;
+import com.oleh.chui.controller.page.path.JspFilePath;
+import com.oleh.chui.controller.page.path.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
 import com.oleh.chui.model.entity.Product;
 import com.oleh.chui.model.service.ProductService;
@@ -26,25 +26,27 @@ public class CatalogPage extends PageChainBase {
 
     @Override
     public void processUri(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String uri = req.getRequestURI();
-        HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
+        HttpMethod httpMethod = req.getMethod().equals("GET") ? HttpMethod.GET : HttpMethod.valueOf(req.getParameter("method"));
 
         if (uri.equals(PageURI.CATALOG) && httpMethod.equals(HttpMethod.GET)) {
-            HttpSession session = req.getSession();
-
-            List<Product> productList = productService.findAll();
-            Set<String> categorySet = productService.getCategorySet(productList);
-
-            Map<String, String[]> filterMap = req.getParameterMap();
-            List<Product> filteredProductList = productService.filter(productList, filterMap);
-
-            session.setAttribute("productList", filteredProductList);
-            req.setAttribute("categorySet", categorySet);
-            req.getRequestDispatcher(JspFilePath.CATALOG).forward(req, resp);
-
+            processGetMethod(req, resp);
         } else {
             processUtiNext(req, resp);
         }
+    }
+
+    private void processGetMethod(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+
+        List<Product> productList = productService.findAll();
+        Set<String> categorySet = productService.getCategorySet(productList);
+
+        Map<String, String[]> filterMap = req.getParameterMap();
+        List<Product> filteredProductList = productService.filter(productList, filterMap);
+
+        session.setAttribute("productList", filteredProductList);
+        req.setAttribute("categorySet", categorySet);
+        req.getRequestDispatcher(JspFilePath.CATALOG).forward(req, resp);
     }
 }

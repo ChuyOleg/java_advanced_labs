@@ -1,12 +1,11 @@
 package com.oleh.chui.controller.page.user;
 
 import com.oleh.chui.controller.PageChainBase;
-import com.oleh.chui.controller.page.util.JspFilePath;
-import com.oleh.chui.controller.page.util.PageURI;
+import com.oleh.chui.controller.page.path.JspFilePath;
+import com.oleh.chui.controller.page.path.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
 import com.oleh.chui.model.entity.Ordering;
 import com.oleh.chui.model.entity.Person;
-import com.oleh.chui.model.entity.Product;
 import com.oleh.chui.model.service.OrderingService;
 
 import javax.servlet.ServletException;
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
+
 
 public class BasketPage extends PageChainBase {
 
@@ -27,7 +26,7 @@ public class BasketPage extends PageChainBase {
     @Override
     public void processUri(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI();
-        HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
+        HttpMethod httpMethod = req.getMethod().equals("GET") ? HttpMethod.GET : HttpMethod.valueOf(req.getParameter("method"));
         Person.Role role = Person.Role.valueOf(String.valueOf(req.getSession().getAttribute("role")));
 
         if (uri.equals(PageURI.BASKET) && !role.equals(Person.Role.ADMIN)) {
@@ -42,12 +41,10 @@ public class BasketPage extends PageChainBase {
     }
 
     private void processGetMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-
         req.getRequestDispatcher(JspFilePath.USER__BASKET).forward(req, resp);
     }
 
-    private void processPostMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+    private void processPostMethod(HttpServletRequest req,HttpServletResponse resp) throws IOException {
         Person.Role role = Person.Role.valueOf(String.valueOf(req.getSession().getAttribute("role")));
 
         if (role.equals(Person.Role.UNKNOWN)) {
