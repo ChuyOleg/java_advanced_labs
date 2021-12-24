@@ -9,7 +9,7 @@ public class ProductQueries {
 
     public static final String FIND_ALL = "SELECT * FROM product";
 
-    public static final String FIND_PRODUCT_LIST_BY_PERSON_ID = "SELECT productId as id, name, price, category" +
+    public static final String FIND_ALL_BY_PERSON_ID = "SELECT productId as id, name, price, category" +
             ", startDate, size FROM product INNER JOIN ordering ON (product.id = ordering.productId) where personId = ?";
 
     public static final String UPDATE = "UPDATE product SET name = ?, price = ?, category = ?," +

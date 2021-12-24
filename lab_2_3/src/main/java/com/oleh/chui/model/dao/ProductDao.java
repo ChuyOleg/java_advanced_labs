@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ProductDao extends GenericDao<Product>{
 
-    List<Product> findProductListByPersonId(int id);
+    List<Product> findAllByPersonId(int id);
 
 }

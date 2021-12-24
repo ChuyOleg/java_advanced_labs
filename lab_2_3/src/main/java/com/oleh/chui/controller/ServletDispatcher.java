@@ -39,6 +39,8 @@ public class ServletDispatcher extends HttpServlet {
         }
 
         // TODO
+        // think about bag when open login page don't using logout button
+        // add validation for every post/update form
         // make ordered product with 'ordered' label in basket
         // clear ALL Session when exit from account (products in basket!!!!!) ?????
         // think about blocked users

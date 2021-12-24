@@ -133,6 +133,27 @@ public class OrderingDaoImpl implements OrderingDao {
     }
 
     @Override
+    public List<Ordering> findAllByPersonId(int personId) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(OrderingQueries.FIND_ALL_BY_PERSON_ID)) {
+            statement.setInt(1, personId);
+            ResultSet resultSet = statement.executeQuery();
+            List<Ordering> orderingList = new ArrayList<>();
+            while (resultSet.next()) {
+                Ordering ordering = buildOrderingFromResultSet(resultSet);
+
+                orderingList.add(ordering);
+            }
+            return orderingList;
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during finding all Ordering in DB", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+    }
+
+    @Override
     public Ordering.Status findStatusByProductIdAndPersonId(int productId, int personId) {
         Connection connection = ConnectionPoolHolder.getConnection();
 

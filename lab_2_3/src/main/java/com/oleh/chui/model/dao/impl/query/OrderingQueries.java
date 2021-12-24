@@ -10,6 +10,8 @@ public class OrderingQueries {
 
     public static final String FIND_BY_ID = "SELECT * FROM ordering WHERE id = ?";
 
+    public static final String FIND_ALL_BY_PERSON_ID = "SELECT * FROM ordering WHERE personId = ?";
+
     public static final String FIND_BY_PRODUCT_PERSON_ID = "SELECT id FROM ordering WHERE" +
             " productId = ? and personId = ?";
 

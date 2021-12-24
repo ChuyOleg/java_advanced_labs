@@ -92,8 +92,22 @@ div.person-wrapper > p {
     background: wheat;
 }
 
+/* STATUS */
+
 p.status {
     text-align: center;
+}
+
+div.product-wrapper > p.status-REGISTERED {
+    background: yellow;
+}
+
+div.product-wrapper > p.status-PAID {
+    background: greenyellow;
+}
+
+div.product-wrapper > p.status-CANCELED {
+    background: red;
 }
 
 div.person-blocked-false > p {

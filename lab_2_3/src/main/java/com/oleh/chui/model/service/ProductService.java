@@ -107,8 +107,8 @@ public class ProductService {
         return productDao.findAll();
     }
 
-    public List<Product> findProductListByPersonId(int id) {
-        return productDao.findProductListByPersonId(id);
+    public List<Product> findAllByPersonId(int id) {
+        return productDao.findAllByPersonId(id);
     }
 
     public void update(Product product) {

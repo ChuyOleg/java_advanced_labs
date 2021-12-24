@@ -49,31 +49,41 @@ public class ProductManagementPage extends PageChainBase {
         req.getRequestDispatcher(JspFilePath.CREATE_PRODUCT).forward(req, resp);
     }
 
-    private void processPostMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        BigDecimal price = BigDecimal.valueOf(Double.parseDouble(req.getParameter("price")));
-        String category = req.getParameter("category");
-        Product.Size size = Product.Size.valueOf(req.getParameter("size"));
-        LocalDate date = LocalDate.now();
-
-        Product product = new Product.Builder()
-                .setName(name).setPrice(price).setCategory(category)
-                .setSize(size).setStartDate(date).build();
+    private void processPostMethod(HttpServletRequest req,HttpServletResponse resp) throws IOException {
+        Product product = buildProductWithoutIdFromHttpBody(req);
 
         productService.create(product);
 
         resp.sendRedirect(PageURI.ADMIN__PRODUCT_MANAGEMENT);
     }
 
-    private void processPutMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+    private void processPutMethod(HttpServletRequest req,HttpServletResponse resp) throws IOException {
+        Product product = buildProductWithoutIdFromHttpBody(req);
+        product.setId(Integer.parseInt(req.getParameter("id")));
+
+        productService.update(product);
+
+        resp.sendRedirect(PageURI.CATALOG);
     }
 
-    private void processDeleteMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+    private void processDeleteMethod(HttpServletRequest req,HttpServletResponse resp) throws IOException {
         int productId = Integer.parseInt(req.getParameter("id"));
 
         productService.delete(productId);
 
         resp.sendRedirect(PageURI.CATALOG);
 
+    }
+
+    private Product buildProductWithoutIdFromHttpBody(HttpServletRequest req) {
+        String name = req.getParameter("name");
+        BigDecimal price = BigDecimal.valueOf(Double.parseDouble(req.getParameter("price")));
+        String category = req.getParameter("category");
+        Product.Size size = Product.Size.valueOf(req.getParameter("size"));
+        LocalDate date = LocalDate.now();
+
+        return new Product.Builder()
+                .setName(name).setPrice(price).setCategory(category)
+                .setSize(size).setStartDate(date).build();
     }
 }

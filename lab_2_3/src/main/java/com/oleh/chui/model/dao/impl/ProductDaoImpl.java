@@ -105,10 +105,10 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<Product> findProductListByPersonId(int id) {
+    public List<Product> findAllByPersonId(int id) {
         Connection connection = ConnectionPoolHolder.getConnection();
 
-        try (PreparedStatement statement = connection.prepareStatement(ProductQueries.FIND_PRODUCT_LIST_BY_PERSON_ID)) {
+        try (PreparedStatement statement = connection.prepareStatement(ProductQueries.FIND_ALL_BY_PERSON_ID)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             List<Product> productList = new ArrayList<>();

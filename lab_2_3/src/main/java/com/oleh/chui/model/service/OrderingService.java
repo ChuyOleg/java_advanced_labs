@@ -29,6 +29,10 @@ public class OrderingService {
         return orderingDao.findAll();
     }
 
+    public List<Ordering> findAllByPersonId(int personId) {
+        return orderingDao.findAllByPersonId(personId);
+    }
+
     public void update(Ordering ordering) {
         orderingDao.update(ordering);
     }
