@@ -46,7 +46,7 @@ public class ProductManagementPage extends PageChainBase {
     }
 
     private void processGetMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(JspFilePath.CREATE_PRODUCT).forward(req, resp);
+        req.getRequestDispatcher(JspFilePath.ADMIN__CREATE_PRODUCT).forward(req, resp);
     }
 
     private void processPostMethod(HttpServletRequest req,HttpServletResponse resp) throws IOException {

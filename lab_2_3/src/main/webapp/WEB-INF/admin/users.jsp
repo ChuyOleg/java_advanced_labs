@@ -29,6 +29,10 @@
         <div class="person-wrapper person-blocked-${person.blocked}">
             <p class="personLogin"><c:out value="${person.login}" /></p>
             <p class="personEmail"><c:out value="${person.email}" /></p>
+            <form class="show-orders-form" method="get" action="/admin/user/orders">
+                <input type="text" name="personId" value="${person.id}" hidden>
+                <input type="submit" value="Show orders">
+            </form>
             <form class="block-unblock-form" method="post" action="">
                 <input type="text" name="id" value="${person.id}" hidden>
                 <c:if test="${person.blocked}">

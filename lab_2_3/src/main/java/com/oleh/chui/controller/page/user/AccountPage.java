@@ -8,6 +8,7 @@ import com.oleh.chui.model.entity.Ordering;
 import com.oleh.chui.model.entity.Person;
 import com.oleh.chui.model.entity.Product;
 import com.oleh.chui.model.service.OrderingService;
+import com.oleh.chui.model.service.PersonService;
 import com.oleh.chui.model.service.ProductService;
 import com.oleh.chui.model.service.util.UtilService;
 
@@ -23,10 +24,12 @@ public class AccountPage extends PageChainBase {
 
     private final ProductService productService;
     private final OrderingService orderingService;
+    private final PersonService personService;
 
-    public AccountPage(ProductService productService, OrderingService orderingService) {
+    public AccountPage(ProductService productService, OrderingService orderingService, PersonService personService) {
         this.productService = productService;
         this.orderingService = orderingService;
+        this.personService = personService;
     }
 
     @Override
@@ -54,12 +57,14 @@ public class AccountPage extends PageChainBase {
 
             List<Ordering> orderingList = orderingService.findAllByPersonId(personId);
             List<Product> productList = productService.findAllByPersonId(personId);
+            Person person = personService.findById(personId);
 
             Map<Integer, Product> productMapByOrderingId = UtilService.getProductIMapByOrderingId(productList, orderingList);
 
             req.setAttribute("orderingList", orderingList);
+            req.setAttribute("person", person);
             req.setAttribute("productMapByOrderingId", productMapByOrderingId);
-            req.getRequestDispatcher(JspFilePath.ACCOUNT).forward(req, resp);
+            req.getRequestDispatcher(JspFilePath.USER__ACCOUNT).forward(req, resp);
         } else if (role.equals(Person.Role.UNKNOWN)) {
             resp.sendRedirect(PageURI.LOGIN);
         }

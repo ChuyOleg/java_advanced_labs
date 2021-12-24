@@ -21,4 +21,6 @@ public class PageURI {
     public static String ADMIN__USERS = "/admin/users";
 
     public static String ADMIN__PRODUCT_MANAGEMENT = "/admin/productManagement";
+
+    public static String ADMIN__USER__ORDERS = "/admin/user/orders";
 }

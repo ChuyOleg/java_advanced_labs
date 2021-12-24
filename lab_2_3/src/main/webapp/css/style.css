@@ -161,6 +161,10 @@ form.sort-form {
     margin: auto;
 }
 
+form.show-orders-form {
+    margin-bottom: 0;
+}
+
 /*LOGIN AS A GUEST BUTTON*/
 
 a.login-guest {

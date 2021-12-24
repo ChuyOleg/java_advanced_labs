@@ -44,7 +44,7 @@ public class BasketPage extends PageChainBase {
     private void processGetMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
-        req.getRequestDispatcher(JspFilePath.BASKET).forward(req, resp);
+        req.getRequestDispatcher(JspFilePath.USER__BASKET).forward(req, resp);
     }
 
     private void processPostMethod(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {

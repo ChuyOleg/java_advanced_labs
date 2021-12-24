@@ -1,6 +1,7 @@
 package com.oleh.chui.controller;
 
 import com.oleh.chui.controller.page.*;
+import com.oleh.chui.controller.page.admin.OrdersManagement;
 import com.oleh.chui.controller.page.admin.ProductManagementPage;
 import com.oleh.chui.controller.page.admin.UsersManagementPage;
 import com.oleh.chui.controller.page.user.AccountPage;
@@ -30,7 +31,11 @@ public class ServletDispatcher extends HttpServlet {
                 .linkWith(new ProductManagementPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new LogoutPage())
                 .linkWith(new AccountPage(ServiceFactory.getInstance().createProductService(),
-                        ServiceFactory.getInstance().createOrderingService()));
+                        ServiceFactory.getInstance().createOrderingService(),
+                        ServiceFactory.getInstance().createPersonService()))
+                .linkWith(new OrdersManagement(ServiceFactory.getInstance().createProductService(),
+                        ServiceFactory.getInstance().createOrderingService(),
+                        ServiceFactory.getInstance().createPersonService()));
 
         try {
             catalogPage.processUri(req, resp);
@@ -39,6 +44,7 @@ public class ServletDispatcher extends HttpServlet {
         }
 
         // TODO
+        // change everywhere way of getting httpMethod (post => post | put | delete)
         // think about bag when open login page don't using logout button
         // add validation for every post/update form
         // make ordered product with 'ordered' label in basket
