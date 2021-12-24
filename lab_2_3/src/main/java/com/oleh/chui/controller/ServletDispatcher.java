@@ -47,10 +47,7 @@ public class ServletDispatcher extends HttpServlet {
 
         // TODO
         // add validation for every post/update form
-//        DONE
-        // clear ALL Session when exit from account (products in basket!!!!!) ?????
         // add logger
-        // add validation of data
         // error pages
 
     }

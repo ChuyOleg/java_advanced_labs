@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class UtilService {
 
-    public static Map<Integer, Product> getProductIMapByOrderingId(List<Product> productList, List<Ordering> orderingList) {
+    public static Map<Integer, Product> getProductIdMapByOrderingId(List<Product> productList, List<Ordering> orderingList) {
         Map<Integer, Product> map = new HashMap<>();
         orderingList.forEach(ordering -> map.put(ordering.getId(), productList.stream()
                 .filter(product -> product.getId() == ordering.getProductId()).findAny().orElse(new Product())));

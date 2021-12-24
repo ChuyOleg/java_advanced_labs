@@ -169,6 +169,21 @@ public class PersonDaoImpl implements PersonDao {
     }
 
     @Override
+    public boolean loginIsNotFree(char[] login) {
+        Connection connection = ConnectionPoolHolder.getConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(PersonQueries.LOGIN_IS_FREE)) {
+            statement.setString(1, String.valueOf(login));
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception during checking is login free in DB", e);
+        } finally {
+            ConnectionPoolHolder.closeConnection(connection);
+        }
+    }
+
+    @Override
     public void blockUserById(int id) {
         Connection connection = ConnectionPoolHolder.getConnection();
 

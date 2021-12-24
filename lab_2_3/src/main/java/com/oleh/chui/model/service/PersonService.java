@@ -62,4 +62,8 @@ public class PersonService {
                 .blocked(false)
                 .build();
     }
+
+    public boolean loginIsNotFree(char[] login) {
+        return personDao.loginIsNotFree(login);
+    }
 }

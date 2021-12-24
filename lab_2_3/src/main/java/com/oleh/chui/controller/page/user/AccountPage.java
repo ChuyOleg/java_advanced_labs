@@ -59,7 +59,7 @@ public class AccountPage extends PageChainBase {
             List<Product> productList = productService.findAllByPersonId(personId);
             Person person = personService.findById(personId);
 
-            Map<Integer, Product> productMapByOrderingId = UtilService.getProductIMapByOrderingId(productList, orderingList);
+            Map<Integer, Product> productMapByOrderingId = UtilService.getProductIdMapByOrderingId(productList, orderingList);
 
             req.setAttribute("orderingList", orderingList);
             req.setAttribute("person", person);

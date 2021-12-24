@@ -13,6 +13,8 @@ public interface PersonDao extends GenericDao<Person> {
 
     int createAndGetId(Person person);
 
+    boolean loginIsNotFree(char[] login);
+
     void blockUserById(int id);
 
     void unblockUserById(int id);
