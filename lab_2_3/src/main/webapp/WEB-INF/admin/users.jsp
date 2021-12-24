@@ -34,6 +34,7 @@
                 <input type="submit" value="Show orders">
             </form>
             <form class="block-unblock-form" method="post" action="">
+                <input type="text" name="method" value="POST" hidden>
                 <input type="text" name="id" value="${person.id}" hidden>
                 <c:if test="${person.blocked}">
                     <input type="submit" name="action" value="Unblock">

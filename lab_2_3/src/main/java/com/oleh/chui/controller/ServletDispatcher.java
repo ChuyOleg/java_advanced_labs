@@ -17,16 +17,16 @@ import java.io.IOException;
 
 public class ServletDispatcher extends HttpServlet {
 
+    // CatalogPage is defaultPage so CatalogPage must be final in chaining !!!
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) {
 
-        PageChain catalogPage = new CatalogPage(ServiceFactory.getInstance().createProductService());
-        catalogPage
+        PageChain loginPage = new LoginPage(ServiceFactory.getInstance().createPersonService());
+        loginPage
                 .linkWith(new ProcessSortingPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new SaveToBasketPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new BasketPage(ServiceFactory.getInstance().createOrderingService()))
                 .linkWith(new RegistrationPage(ServiceFactory.getInstance().createPersonService()))
-                .linkWith(new LoginPage(ServiceFactory.getInstance().createPersonService()))
                 .linkWith(new UsersManagementPage(ServiceFactory.getInstance().createPersonService()))
                 .linkWith(new ProductManagementPage(ServiceFactory.getInstance().createProductService()))
                 .linkWith(new LogoutPage())
@@ -35,20 +35,20 @@ public class ServletDispatcher extends HttpServlet {
                         ServiceFactory.getInstance().createPersonService()))
                 .linkWith(new OrdersManagement(ServiceFactory.getInstance().createProductService(),
                         ServiceFactory.getInstance().createOrderingService(),
-                        ServiceFactory.getInstance().createPersonService()));
+                        ServiceFactory.getInstance().createPersonService()))
+                .linkWith(new CatalogPage(ServiceFactory.getInstance().createProductService()));
+
 
         try {
-            catalogPage.processUri(req, resp);
+            loginPage.processUri(req, resp);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
 
         // TODO
-        // change everywhere way of getting httpMethod (post => post | put | delete)
-        // think about bug when open login page don't using logout button
         // add validation for every post/update form
+//        DONE
         // clear ALL Session when exit from account (products in basket!!!!!) ?????
-        // think about blocked users
         // add logger
         // add validation of data
         // error pages

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LogoutPage extends PageChainBase {
 
@@ -30,6 +31,7 @@ public class LogoutPage extends PageChainBase {
 
         session.setAttribute("id", null);
         session.setAttribute("role", Person.Role.UNKNOWN);
+        session.setAttribute("basket", new ArrayList<>());
 
         resp.sendRedirect(PageURI.LOGIN);
     }

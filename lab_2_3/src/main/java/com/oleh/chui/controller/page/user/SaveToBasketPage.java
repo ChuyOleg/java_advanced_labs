@@ -24,23 +24,27 @@ public class SaveToBasketPage extends PageChainBase {
     @Override
     public void processUri(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI();
-        HttpMethod httpMethod = HttpMethod.valueOf(req.getMethod());
+        HttpMethod httpMethod = req.getMethod().equals("GET") ? HttpMethod.GET : HttpMethod.valueOf(req.getParameter("method"));
 
         if (uri.equals(PageURI.CATALOG__SAVE_TO_BASKET) && httpMethod.equals(HttpMethod.POST)) {
-            HttpSession session = req.getSession();
-
-            int productId = Integer.parseInt(req.getParameter("id"));
-
-            Product product = productService.findById(productId);
-
-            List<Product> basket = (List<Product>) session.getAttribute("basket");
-
-            basket.add(product);
-
-            resp.sendRedirect(PageURI.CATALOG);
-
+            processPostMethod(req, resp);
         } else {
             processUtiNext(req, resp);
         }
+    }
+
+    private void processPostMethod(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+
+        int productId = Integer.parseInt(req.getParameter("id"));
+
+        Product product = productService.findById(productId);
+
+        List<Product> basket = (List<Product>) session.getAttribute("basket");
+
+        basket.add(product);
+
+        resp.sendRedirect(PageURI.CATALOG);
+
     }
 }

@@ -91,6 +91,7 @@
                 <p class="productStartDate"><c:out value="Date: ${product.startDate}" /></p>
                 <c:if test="${!sessionScope.basket.contains(product)}">
                     <form class="save-to-basket" method="post" action="/catalog/saveToBasket">
+                        <input type="text" name="method" value="POST" hidden>
                         <input type="text" name="id" value="${product.id}" hidden>
                         <input type="Submit" value="Save to basket">
                     </form>
