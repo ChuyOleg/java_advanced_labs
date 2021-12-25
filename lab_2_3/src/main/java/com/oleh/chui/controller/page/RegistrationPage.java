@@ -1,9 +1,12 @@
 package com.oleh.chui.controller.page;
 
 import com.oleh.chui.controller.PageChainBase;
+import com.oleh.chui.controller.exception.PasswordsNotMatchException;
+import com.oleh.chui.controller.exception.PersonAlreadyExistException;
 import com.oleh.chui.controller.page.path.JspFilePath;
 import com.oleh.chui.controller.page.path.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
+import com.oleh.chui.controller.validator.RegistrationValidator;
 import com.oleh.chui.model.entity.Person;
 import com.oleh.chui.model.service.PersonService;
 
@@ -12,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class RegistrationPage extends PageChainBase {
 
@@ -52,25 +54,33 @@ public class RegistrationPage extends PageChainBase {
         String email = req.getParameter("email");
 
         try {
-            if (Arrays.equals(password, passwordCopy)) {
-                Person person = personService.buildStandardUserWithoutId(login, password, email);
-
-                int personId = personService.createAndGetId(person);
-
-                session.setAttribute("id", personId);
-                session.setAttribute("role", person.getRole().getValue());
-                resp.sendRedirect(PageURI.CATALOG);
-            } else {
-                req.setAttribute("login", login);
-                req.setAttribute("email", email);
-                req.setAttribute("errorPassword", true);
-                req.getRequestDispatcher(JspFilePath.REGISTRATION).forward(req, resp);
-            }
-        } catch (RuntimeException e) {
+            RegistrationValidator.checkForLoginIsFree(login);
+        } catch (PersonAlreadyExistException e) {
             req.setAttribute("email", email);
-            req.setAttribute("errorUserExist", true);
+            req.setAttribute("loginIsNotFreeError", true);
+            req.setAttribute("loginIsNotFreeErrorMessage", e.getMessage());
             req.getRequestDispatcher(JspFilePath.REGISTRATION).forward(req, resp);
+            return;
         }
+
+        try {
+            RegistrationValidator.checkForPasswordsMatching(password, passwordCopy);
+        } catch (PasswordsNotMatchException e) {
+            req.setAttribute("login", login);
+            req.setAttribute("email", email);
+            req.setAttribute("passwordsError", true);
+            req.setAttribute("passwordsErrorMessage", e.getMessage());
+            req.getRequestDispatcher(JspFilePath.REGISTRATION).forward(req, resp);
+            return;
+        }
+
+        Person person = personService.buildStandardUserWithoutId(login, password, email);
+
+        int personId = personService.createAndGetId(person);
+
+        session.setAttribute("id", personId);
+        session.setAttribute("role", person.getRole().getValue());
+        resp.sendRedirect(PageURI.CATALOG);
     }
 
 }

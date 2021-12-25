@@ -169,11 +169,11 @@ public class PersonDaoImpl implements PersonDao {
     }
 
     @Override
-    public boolean loginIsNotFree(char[] login) {
+    public boolean loginIsNotFree(String login) {
         Connection connection = ConnectionPoolHolder.getConnection();
 
         try (PreparedStatement statement = connection.prepareStatement(PersonQueries.LOGIN_IS_FREE)) {
-            statement.setString(1, String.valueOf(login));
+            statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             return resultSet.next();
         } catch (SQLException e) {

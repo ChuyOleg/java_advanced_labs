@@ -14,4 +14,6 @@ public class Message {
 
     public static String INCORRECT_SIZE = "Size must be one of (SMALL | MEDIUM | LARGE)";
 
+    public static String USER_IS_BLOCKED = "Your account is blocked";
+
 }

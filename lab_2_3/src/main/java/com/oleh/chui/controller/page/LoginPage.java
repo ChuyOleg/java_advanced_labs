@@ -1,9 +1,12 @@
 package com.oleh.chui.controller.page;
 
 import com.oleh.chui.controller.PageChainBase;
+import com.oleh.chui.controller.exception.AuthenticationException;
+import com.oleh.chui.controller.exception.UserIsBlockedException;
 import com.oleh.chui.controller.page.path.JspFilePath;
 import com.oleh.chui.controller.page.path.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
+import com.oleh.chui.controller.validator.LoginValidator;
 import com.oleh.chui.model.entity.Person;
 import com.oleh.chui.model.service.PersonService;
 
@@ -48,20 +51,29 @@ public class LoginPage extends PageChainBase {
         String login = req.getParameter("login");
         char[] password = req.getParameter("password").toCharArray();
 
+        try {
+            LoginValidator.checkForCorrectAuthentication(login, password);
+        } catch (AuthenticationException e) {
+            req.setAttribute("authenticationError", true);
+            req.setAttribute("authenticationErrorMessage", e.getMessage());
+            req.getRequestDispatcher(JspFilePath.LOGIN).forward(req, resp);
+            return;
+        }
+
         Person person = personService.findByLoginAndPassword(login, password);
 
-        if (person.getId() != 0) {
-            if (!person.getBlocked()) {
-                session.setAttribute("id", person.getId());
-                session.setAttribute("role", person.getRole().getValue());
-                resp.sendRedirect(PageURI.CATALOG);
-            } else {
-                req.setAttribute("errorBlocked", true);
-                req.getRequestDispatcher(JspFilePath.LOGIN).forward(req, resp);
-            }
-        } else {
-            req.setAttribute("error", true);
+        try {
+            LoginValidator.checkForUserIsNotBlocked(person);
+        } catch (UserIsBlockedException e) {
+            req.setAttribute("userIsBlockedError", true);
+            req.setAttribute("userIsBlockedErrorMessage", e.getMessage());
             req.getRequestDispatcher(JspFilePath.LOGIN).forward(req, resp);
+            return;
         }
+
+        session.setAttribute("id", person.getId());
+        session.setAttribute("role", person.getRole().getValue());
+        resp.sendRedirect(PageURI.CATALOG);
     }
+
 }

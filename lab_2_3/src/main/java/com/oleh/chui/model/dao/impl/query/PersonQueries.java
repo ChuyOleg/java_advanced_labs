@@ -25,6 +25,6 @@ public class PersonQueries {
 
     public static final String UNBLOCK_USER_BY_ID = "UPDATE person SET blocked = false WHERE id = ?";
 
-    public static final String LOGIN_IS_FREE = "SELECT * FROM person WHERE login = '?'";
+    public static final String LOGIN_IS_FREE = "SELECT * FROM person WHERE login = ?";
 
 }

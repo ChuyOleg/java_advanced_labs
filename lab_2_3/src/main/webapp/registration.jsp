@@ -15,11 +15,11 @@
             <h3>
                 Hello, create new account or <a href="/login">log in</a>
             </h3>
-            <c:if test="${requestScope.errorUserExist}">
-                <p class="error">Oops, user with this login is already registered.</p>
+            <c:if test="${requestScope.loginIsNotFreeError}">
+                <p class="error"><c:out value="${requestScope.loginIsNotFreeErrorMessage}" /></p>
             </c:if>
-            <c:if test="${requestScope.errorPassword}">
-                <p class="error">Oops, passwords don`t match.</p>
+            <c:if test="${requestScope.passwordsError}">
+                <p class="error"><c:out value="${requestScope.passwordsErrorMessage}" /></p>
             </c:if>
             <form method="post" action="/registration">
                 <input type="text" name="method" value="POST" hidden>

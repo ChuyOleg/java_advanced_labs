@@ -27,15 +27,13 @@
             <p class="productSize"><c:out value="Size: ${requestScope.productMapByOrderingId.get(order.id).size}" /></p>
             <p class="productStartDate"><c:out value="Date: ${requestScope.productMapByOrderingId.get(order.id).startDate}" /></p>
             <p class="status status-${order.status}"><c:out value="${order.status}"/></p>
-            <c:if test="${!order.status.toString().equals('CANCELED')}">
+            <c:if test="${order.status.toString().equals('REGISTERED')}">
                 <form method="post" action="">
                     <input type="text" name="method" value="PUT" hidden>
                     <input type="text" name="orderId" value="${order.id}" hidden>
                     <input type="text" name="status" value="CANCELED" hidden>
                     <input type="submit" value="change status to CANCELED">
                 </form>
-            </c:if>
-            <c:if test="${!order.status.toString().equals('PAID')}">
                 <form method="post" action="">
                     <input type="text" name="method" value="PUT" hidden>
                     <input type="text" name="orderId" value="${order.id}" hidden>

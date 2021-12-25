@@ -17,7 +17,7 @@ public class RegistrationValidator {
         }
     }
 
-    public static void checkForLoginIsFree(char[] login) throws PersonAlreadyExistException {
+    public static void checkForLoginIsFree(String login) throws PersonAlreadyExistException {
         if (personService.loginIsNotFree(login)) {
             throw new PersonAlreadyExistException(Message.PERSON_ALREADY_EXIST);
         }

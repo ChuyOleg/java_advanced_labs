@@ -63,7 +63,7 @@ public class PersonService {
                 .build();
     }
 
-    public boolean loginIsNotFree(char[] login) {
+    public boolean loginIsNotFree(String login) {
         return personDao.loginIsNotFree(login);
     }
 }

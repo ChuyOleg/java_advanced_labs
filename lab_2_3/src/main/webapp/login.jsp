@@ -15,11 +15,11 @@
             <h3>
                 Hello, log in or <a href="/registration">create new account</a>
             </h3>
-            <c:if test="${requestScope.error}">
-                <p class="error">Oops, that's not a match.</p>
+            <c:if test="${requestScope.authenticationError}">
+                <p class="error"><c:out value="${requestScope.authenticationErrorMessage}" /></p>
             </c:if>
-            <c:if test="${requestScope.errorBlocked}">
-                <p class="error">Your account is blocked.</p>
+            <c:if test="${requestScope.userIsBlockedError}">
+                <p class="error"><c:out value="${requestScope.userIsBlockedErrorMessage}" /></p>
             </c:if>
             <form method="post" action="/login">
                 <input type="text" name="method" value="POST" hidden>
