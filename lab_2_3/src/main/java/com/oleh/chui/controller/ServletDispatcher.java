@@ -4,6 +4,7 @@ import com.oleh.chui.controller.page.*;
 import com.oleh.chui.controller.page.admin.OrdersManagement;
 import com.oleh.chui.controller.page.admin.ProductManagementPage;
 import com.oleh.chui.controller.page.admin.UsersManagementPage;
+import com.oleh.chui.controller.page.path.JspFilePath;
 import com.oleh.chui.controller.page.user.AccountPage;
 import com.oleh.chui.controller.page.user.BasketPage;
 import com.oleh.chui.controller.page.user.SaveToBasketPage;
@@ -19,7 +20,7 @@ public class ServletDispatcher extends HttpServlet {
 
     // CatalogPage is defaultPage so CatalogPage must be final in chaining !!!
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         PageChain loginPage = new LoginPage(ServiceFactory.getInstance().createPersonService());
         loginPage
@@ -42,13 +43,8 @@ public class ServletDispatcher extends HttpServlet {
         try {
             loginPage.processUri(req, resp);
         } catch (ServletException | IOException e) {
-            e.printStackTrace();
+            req.getRequestDispatcher(JspFilePath.ERROR).forward(req, resp);
         }
-
-        // TODO
-        // add validation for every post/update form
-        // add logger
-        // error pages
 
     }
 }

@@ -18,4 +18,6 @@ public class JspFilePath {
 
     public static String ADMIN__USER_ORDERS = "/WEB-INF/admin/userOrders.jsp";
 
+    public static String ERROR = "/error.jsp";
+
 }
