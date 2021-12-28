@@ -133,10 +133,15 @@ public class ProductManagementPage extends PageChainBase {
         resp.sendRedirect(PageURI.CATALOG);
     }
 
-    private void processDeleteMethod(HttpServletRequest req,HttpServletResponse resp) throws IOException {
+    private void processDeleteMethod(HttpServletRequest req,HttpServletResponse resp) throws IOException, ServletException {
         int productId = Integer.parseInt(req.getParameter("id"));
 
-        productService.delete(productId);
+        try {
+            productService.delete(productId);
+        } catch (RuntimeException e) {
+            req.getRequestDispatcher(JspFilePath.ADMIN__PRODUCT_CANNOT_BE_DELETED).forward(req, resp);
+            return;
+        }
 
         resp.sendRedirect(PageURI.CATALOG);
 

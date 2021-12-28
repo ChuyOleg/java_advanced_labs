@@ -24,4 +24,6 @@ public class PageURI {
 
     public static String ADMIN__USER__ORDERS = "/admin/user/orders";
 
+    public static String FAVICON_ICO = "/favicon.ico";
+
 }

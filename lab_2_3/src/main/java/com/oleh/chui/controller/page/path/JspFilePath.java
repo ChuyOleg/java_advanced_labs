@@ -18,6 +18,7 @@ public class JspFilePath {
 
     public static String ADMIN__USER_ORDERS = "/WEB-INF/admin/userOrders.jsp";
 
-    public static String ERROR = "/error.jsp";
+    public static String ADMIN__PRODUCT_CANNOT_BE_DELETED = "/WEB-INF/admin/productCannotBeDeleted.jsp";
 
+    public static String ERROR = "/error.jsp";
 }

@@ -42,7 +42,7 @@ public class ServletDispatcher extends HttpServlet {
 
         try {
             loginPage.processUri(req, resp);
-        } catch (ServletException | IOException e) {
+        } catch (RuntimeException e) {
             req.getRequestDispatcher(JspFilePath.ERROR).forward(req, resp);
         }
 

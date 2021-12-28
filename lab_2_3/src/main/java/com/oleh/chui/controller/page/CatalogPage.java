@@ -2,6 +2,7 @@ package com.oleh.chui.controller.page;
 
 import com.oleh.chui.controller.PageChainBase;
 import com.oleh.chui.controller.page.path.JspFilePath;
+import com.oleh.chui.controller.page.path.PageURI;
 import com.oleh.chui.controller.util.HttpMethod;
 import com.oleh.chui.model.entity.Product;
 import com.oleh.chui.model.service.ProductService;
@@ -25,9 +26,10 @@ public class CatalogPage extends PageChainBase {
 
     @Override
     public void processUri(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uri = req.getRequestURI();
         HttpMethod httpMethod = req.getMethod().equals("GET") ? HttpMethod.GET : HttpMethod.valueOf(req.getParameter("method"));
 
-        if (httpMethod.equals(HttpMethod.GET)) {
+        if (!uri.equals(PageURI.FAVICON_ICO) && httpMethod.equals(HttpMethod.GET)) {
             processGetMethod(req, resp);
         } else {
             processUtiNext(req, resp);
